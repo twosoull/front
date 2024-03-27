@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drag and Drop Image Upload</title>
+<style>
+    #drop-area {
+        position: relative;
+        border: 2px dashed #ccc;
+        border-radius: 20px;
+        width: 300px;
+        height: 200px;
+        text-align: center;
+        line-height: 200px;
+        font-family: Arial, sans-serif;
+        cursor: pointer;
+    }
+    .image-container {
+        position: relative;
+        display: inline-block;
+        vertical-align: top;
+    }
+    .image-container img {
+        max-width: 100%;
+        max-height: 200px;
+        border-radius: 20px;
+    }
+    .delete-button {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background-color: #888;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+
+<div id="drop-area">Drop Image Here</div>
+
+<div class="image-container" id="image-container" style="display: none;">
+    <img id="uploaded-image">
+    <button class="delete-button" id="delete-button">X</button>
+</div>
+
+<script>
+    var dropArea = document.getElementById('drop-area');
+    var imageContainer = document.getElementById('image-container');
+    var uploadedImage = document.getElementById('uploaded-image');
+    var deleteButton = document.getElementById('delete-button');
+
+    // Prevent default drag behaviors
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, preventDefaults, false);
+        document.body.addEventListener(eventName, preventDefaults, false);
+    });
+
+    // Highlight drop area when item is dragged over it
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropArea.addEventListener(eventName, highlight, false);
+    });
+
+    // Remove highlight when item is dragged away from drop area
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, unhighlight, false);
+    });
+
+    // Handle dropped files
+    dropArea.addEventListener('drop', handleDrop, false);
+
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    function highlight() {
+        dropArea.classList.add('highlight');
+    }
+
+    function unhighlight() {
+        dropArea.classList.remove('highlight');
+    }
+
+    function handleDrop(e) {
+        var dt = e.dataTransfer;
+        var files = dt.files;
+
+        handleFiles(files);
+    }
+
+    function handleFiles(files) {
+        [...files].forEach(uploadFile);
+    }
+
+    function uploadFile(file) {
+        var reader = new FileReader();
+        reader.onload = function(event) {
+            uploadedImage.src = event.target.result;
+            imageContainer.style.display = 'inline-block';
+        };
+        reader.readAsDataURL(file);
+    }
+
+    deleteButton.addEventListener('click', function() {
+        imageContainer.style.display = 'none';
+        uploadedImage.src = '';
+    });
+</script>
+
+</body>
+</html>

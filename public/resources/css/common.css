@@ -1,0 +1,125 @@
+@charset "utf-8";
+
+/* font -------------------------------------------------*/
+/*
+Copyright (c) 2021 Kil Hyung-jin, with Reserved Font Name Pretendard.
+https://github.com/orioncactus/pretendard
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is copied below, and is also available with a FAQ at:
+http://scripts.sil.org/OFL
+*/
+
+@font-face {
+	font-family: 'Pretendard';
+	font-weight: 900;
+	font-display: swap;
+	src: local('Pretendard Black'), url('../fonts/Pretendard-Black.woff2') format('woff2'), url('../fonts/Pretendard-Black.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'Pretendard';
+	font-weight: 800;
+	font-display: swap;
+	src: local('Pretendard ExtraBold'), url('../fonts/Pretendard-ExtraBold.woff2') format('woff2'), url('../fonts/Pretendard-ExtraBold.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'Pretendard';
+	font-weight: 700;
+	font-display: swap;
+	src: local('Pretendard Bold'), url('../fonts/Pretendard-Bold.woff2') format('woff2'), url('../fonts/Pretendard-Bold.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'Pretendard';
+	font-weight: 600;
+	font-display: swap;
+	src: local('Pretendard SemiBold'), url('../fonts/Pretendard-SemiBold.woff2') format('woff2'), url('../fonts/Pretendard-SemiBold.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'Pretendard';
+	font-weight: 500;
+	font-display: swap;
+	src: local('Pretendard Medium'), url('../fonts/Pretendard-Medium.woff2') format('woff2'), url('../fonts/Pretendard-Medium.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'Pretendard';
+	font-weight: 400;
+	font-display: swap;
+	src: local('Pretendard Regular'), url('../fonts/Pretendard-Regular.woff2') format('woff2'), url('../fonts/Pretendard-Regular.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'Pretendard';
+	font-weight: 300;
+	font-display: swap;
+	src: local('Pretendard Light'), url('../fonts/Pretendard-Light.woff2') format('woff2'), url('../fonts/Pretendard-Light.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'Pretendard';
+	font-weight: 200;
+	font-display: swap;
+	src: local('Pretendard ExtraLight'), url('../fonts/Pretendard-ExtraLight.woff2') format('woff2'), url('../fonts/Pretendard-ExtraLight.woff') format('woff');
+}
+
+@font-face {
+	font-family: 'Pretendard';
+	font-weight: 100;
+	font-display: swap;
+	src: local('Pretendard Thin'), url('../fonts/Pretendard-Thin.woff2') format('woff2'), url('../fonts/Pretendard-Thin.woff') format('woff');
+}
+
+
+/* reset ---------------------------------------- */
+*{box-sizing:border-box;}
+/* *:focus,
+*:active,
+*:hover{outline:0 none;} */
+html{-webkit-text-size-adjust: none; font-size:16px; line-height:1.5;}
+html,body{width:100%;height:100%;padding:0;margin:0;font-family:'Pretendard', 'Apple SD Gothic Neo','Ubuntu','Dotum','돋움',sans-serif; letter-spacing:-0.25px;}
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,textarea,p,blockquote,th,td,input,select,textarea,button{margin:0;padding:0}
+fieldset,img{border:0 none}
+dl,ul,ol,menu,li{list-style:none}
+blockquote, q{quotes:none}
+blockquote:before, blockquote:after,q:before, q:after{content:'';content:none}
+h1,h2,h3,h4,h5{padding:0;margin:0;}
+p{margin:0;padding:0;word-wrap:break-word;word-break:keep-all;}
+a, a:hover, a:focus{text-decoration:none;color:#444;}
+fieldset,img{border:0 none}
+img{position:relative;}
+figure img{width:100%; display: block;}
+input,select,textarea,button{vertical-align:middle;font-family:'Pretendard', 'Apple SD Gothic Neo','Ubuntu','Dotum','돋움',sans-serif;-webkit-border-radius:0; -moz-border-radius:0; -o-border-radius:0; border-radius:0; color:#38373a;}
+input{-webkit-border-radius:0;border:0 none;font-family:inherit;font-size:inherit;line-height:inherit;appearance:none;-webkit-appearance:none;}
+input::placeholder{font-family:'Pretendard', 'Apple SD Gothic Neo','Ubuntu','Dotum','돋움',sans-serif; font-weight:400 !important; color:#999 !important;}
+input:-ms-input-placeholder{font-family:'Pretendard', 'Apple SD Gothic Neo','Ubuntu','Dotum','돋움',sans-serif; font-weight:400 !important; color:#999 !important}/* IE */
+input::-webkit-input-placeholder{font-family:'Pretendard', 'Apple SD Gothic Neo','Ubuntu','Dotum','돋움',sans-serif; font-weight:400 !important; color:#999 !important}/* Chrome */
+input:-mos-input-placeholder{font-family:'Pretendard', 'Apple SD Gothic Neo','Ubuntu','Dotum','돋움',sans-serif; font-weight:400 !important; color:#999 !important}/* Firefox */
+input::-ms-clear,
+input::-ms-reveal{
+	display:none;width:0;height:0;
+}
+input::-webkit-search-decoration,
+input::-webkit-search-cancel-button,
+input::-webkit-search-results-button,
+input::-webkit-search-results-decoration{
+	display:none;
+}
+input{color:#38373A;font-size:16px;letter-spacing:-.25px;}
+button{border:0 none;border-radius:0;background-color:transparent;cursor:pointer}
+address,caption,cite,code,dfn,em,var{font-style:normal;font-weight:normal}
+caption{height:0;padding:0;font-size:0;text-indent:-9999px;}
+table{border-spacing:0;border-collapse:collapse;}
+textarea{-webkit-appearance:none;-webkit-border-radius:0;width:100%;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;outline:none;font:inherit;resize:none;overflow:auto;}
+textarea::placeholder{font-family:'Pretendard', 'Apple SD Gothic Neo','Ubuntu','Dotum','돋움',sans-serif; font-weight:400 !important; color:#999 !important;}
+textarea:-ms-input-placeholder{font-family:'Pretendard', 'Apple SD Gothic Neo','Ubuntu','Dotum','돋움',sans-serif; font-weight:400 !important; color:#999 !important;}
+textarea::-webkit-input-placeholder{font-family:'Pretendard', 'Apple SD Gothic Neo','Ubuntu','Dotum','돋움',sans-serif; font-weight:400 !important; color:#999 !important;}
+textarea:-mos-input-placeholder{font-family:'Pretendard', 'Apple SD Gothic Neo','Ubuntu','Dotum','돋움',sans-serif; font-weight:400 !important; color:#999 !important;}
+select{-webkit-appearance:none;-moz-appearance:none;appearance:none;}
+select::-ms-expand{display:none;/* 화살표 없애기 for IE10, 11*/}
+figure{margin:0}
+
+.blind{position:absolute;left:-9999px;width:0.01px;height:0.01px;font-size:0.1px;line-height:0.01px;overflow:hidden;}
