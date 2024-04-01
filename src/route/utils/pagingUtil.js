@@ -2,16 +2,18 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import isEmpty from './util';
 
+
+
 function callApiGetContentList(pagingProps,i){
+
     let pageNum = i > 0 ? i-1 : i;
     const params = {page : pageNum}
-    axios.get("/api/admin/contact/list",{params}).then((result) => {
-
+    axios.get(pagingProps.url,{params}).then((result) => {
         if (isEmpty(result.data.code)) {
             let copy = [...pagingProps.resultList];
             copy = result.data.data.content;
             pagingProps.setResultList(copy);
-
+            
             let curPage = result.data.data.number + 1;
             pagingProps.setCurPage(curPage); //현재 페이지 번호
             pagingProps.setTotalPage(result.data.data.totalPages);// 전체 페이지 수

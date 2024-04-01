@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { Paging, callApiGetContentList } from '../../utils/pagingUtil.js';
 import {Navbar,Container,Nav,Button,Row,Col} from 'react-bootstrap';
 import ContactList from './adminContactList.js';
+import AdminContactView from './adminContactView.js';
 function AdminContact() {
 
     axios.post("/api/admin/login?userPw=As415263!!&userId=twosoull").then((result) => {
@@ -21,6 +22,7 @@ function AdminContact() {
     let [size,setSize] = useState(0);
     let [pageCount,setPageCount] = useState(10);
     let [pageGroup,setPageGroup] = useState(0);
+    let [url,setUrl] = useState("/api/admin/contact/list");
 
     const pagingProps = {
         navigate,
@@ -37,11 +39,11 @@ function AdminContact() {
         setPageCount,
         pageGroup,
         setPageGroup,
+        url,setUrl
       };
       
-
     useEffect(() => {
-                callApiGetContentList(pagingProps,0);
+        callApiGetContentList(pagingProps,0,url);
     }, [])
     return (
         <div class="right_col" role="main" style={{ minHeight: "814px" }}>
@@ -57,10 +59,10 @@ function AdminContact() {
                 </div>
                 <Routes>
                     <Route path="/init" element={<ContactList pagingProps={pagingProps}/>} /> 
-                    <Route path="/view" element={<div>asdadsas</div>} /> 
+                    <Route path="/view/:id" element={<AdminContactView />} /> 
                 </Routes>
             </div>
         </div>
-    );
+    )
 }
 export default AdminContact;

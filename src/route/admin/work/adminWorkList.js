@@ -1,17 +1,21 @@
-function AdminWorkList(){
+import { Paging } from "../../utils/pagingUtil";
+import { Link } from 'react-router-dom';
+function AdminWorkList(props){
+
+  
     return(
         <div class="right_col" role="main" style={{minHeight: "814px"}}>
-        <div class="">
-          <div class="page-title">
-            <div class="title_left">
-              <h3>WORK</h3>
-            </div>
-
-            <div class="title_right">
-              <div class="col-md-5 col-sm-5   form-group pull-right top_search">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>WORK</h3>
+              </div>
+              <div class="title_right">
+                <div class="col-md-5 col-sm-5   form-group pull-right top_search">
+                </div>
               </div>
             </div>
-          </div>
+
             <div class="col-md-12 col-sm-12  ">
               <div class="x_panel">
                   <div class="x_title">
@@ -26,23 +30,34 @@ function AdminWorkList(){
                           <th>#</th>
                           <th>제목</th>
                           <th>공개여부</th>
-                          <th>유형</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <th scope="row"></th>
-                          <td><a href="/admin/work/write-${item.workType}.do?work-no=${item.workNo}" ></a></td>
-                          <td></td>
-                          <td>유형$</td>
-                        </tr>
+                        {
+                          props.pagingProps.resultList.map((a, index) => {
+                            return (<ResultList work={a} index={index} navigate={props.pagingProps.navigate}/>)
+                          })
+                        }
                       </tbody>
                     </table>
                   </div>
                 </div>
             </div>
           </div>
+          {<Paging pagingProps={props.pagingProps}/>}
       </div>
+    );
+}
+
+function ResultList(props) {
+  return (
+    <tr>
+      <th scope="row">{props.work.id}</th>
+      <td><Link to={`/admin/work/view/${props.work.id}`} state={{ id : props.work.id }}>
+                    {props.work.workTitle}
+                </Link></td>
+      <td>{props.work.useYn}</td>
+    </tr>
     );
 }
 

@@ -13,11 +13,9 @@ function App() {
     <div className="App">
       <div class="nav-md">
         <div class="container body">
-          <div class="main_container">
             <Routes>
               <Route path="/admin/*" element={<Admin />} />
             </Routes>
-          </div>
         </div>
       </div>
     </div>
