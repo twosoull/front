@@ -1,11 +1,13 @@
 import React, { useState, useRef } from 'react';
 import './imageUpload.css'; // 위의 CSS 코드를 styles.css 파일로 이동
 import axios from 'axios';
-const ImageUploadBox = () => {
+const ImageUploadBox = (props) => {
   const [highlighted, setHighlighted] = useState(false);
   const [images, setImages] = useState([]);
   const fileInputRef = useRef(null);
+  
 
+  console.log(props.fileState.fileIds);
   const preventDefaults = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -48,9 +50,11 @@ const ImageUploadBox = () => {
     }
   };
 
-  const deleteImage = (id) => {
+  const deleteImage = (id,fileId) => {
     const updatedImages = images.filter(img => img.id !== id);
     setImages(updatedImages);
+    console.log("삭제파일 : " + fileId);
+    props.fileState.setFileIds(prevFileIds => prevFileIds.filter(file => file.id !== fileId));
   };
 
   const handleDelete = () => {
@@ -76,13 +80,17 @@ const ImageUploadBox = () => {
         formData.append('multipartFile', files[i]);
     }
 
+    console.log('파일이 저장될 API 호출');
     axios.post("http://localhost:3000/fileUpload", formData)
-    .then(res => {
-      console.log(res.data);
+    .then(result => {
+      console.log(result.data.data);
+      props.fileState.setFileIds([...props.fileState.fileIds,{ id:result.data.data, order:props.component.order, tmplType:props.component.type}]);
+      console.log(props.fileState.fileIds);
+
+      setImages([...images, { id: Date.now(), fileId: result.data.data }]); // 이미지 추가
+      props.clickRemoveFileIdState.setClickRemoveFileId([...props.clickRemoveFileIdState.clickRemoveFileId, result.data.data]);
     })
 
-    console.log('파일이 저장될 API 호출');
-    console.log(files); // 파일 정보 확인
   };
 
   return (
@@ -91,7 +99,7 @@ const ImageUploadBox = () => {
         images.map(image => (
           <div key={image.id} className="image-container">
             <img src={image.src} alt="Uploaded" />
-            <button className="delete-button" onClick={() => deleteImage(image.id)}>
+            <button className="delete-button" onClick={() => deleteImage(image.id ,image.fileId )}>
               X
             </button>
           </div>
