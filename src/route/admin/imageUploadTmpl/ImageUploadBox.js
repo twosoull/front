@@ -3,11 +3,11 @@ import './imageUpload.css'; // 위의 CSS 코드를 styles.css 파일로 이동
 import axios from 'axios';
 const ImageUploadBox = (props) => {
   const [highlighted, setHighlighted] = useState(false);
+
+  //update시에 불러오는 props.file의 src를 작성해주고 데이터를 images에 넣어주면 된다.
   const [images, setImages] = useState([]);
   const fileInputRef = useRef(null);
   
-
-  console.log(props.fileState.fileIds);
   const preventDefaults = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -21,41 +21,50 @@ const ImageUploadBox = (props) => {
     setHighlighted(false);
   };
 
-  const handleDrop = (e) => {
-    preventDefaults(e); // 기본 이벤트 방지
-    unhighlight();
-    const dt = e.dataTransfer;
-    const files = dt.files;
-    handleFiles(files);
-    // 파일이 드롭되면 API를 호출하여 파일 저장
-    saveFile(files);
-  };
-
-  const handleFiles = (files) => {
-    const newImages = [];
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        newImages.push({
-          id: Date.now() + i,
-          src: event.target.result,
-          file: file, // 파일 정보 저장
-        });
-        if (newImages.length === files.length) {
-          setImages([...images, ...newImages]);
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const deleteImage = (id,fileId) => {
+    //수정
+    const handleDrop = (e) => {
+      preventDefaults(e); // 기본 이벤트 방지
+      unhighlight();
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      saveFile(files).then(id => {
+          handleFiles(files,id);
+          console.log("저장된 id : " + id);
+      });
+      // 파일이 드롭되면 API를 호출하여 파일 저장
+    };
+    //수정
+    const handleFiles = (files,id) => {
+      const newImages = [];
+      let loadedCount = 0;
+      for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const reader = new FileReader();
+          id = id;
+        reader.onload = (event) => {
+          newImages.push({
+            id: id,
+            src: event.target.result,
+            file: file, // 파일 정보 저장
+            filsId : id
+          });
+          loadedCount++;
+          if (loadedCount === files.length) {
+            setImages([...images, ...newImages]);
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+      return id;
+    };
+  
+  const deleteImage = (id, fileId) => {
     const updatedImages = images.filter(img => img.id !== id);
     setImages(updatedImages);
-    console.log("삭제파일 : " + fileId);
-    props.fileState.setFileIds(prevFileIds => prevFileIds.filter(file => file.id !== fileId));
+    console.log("삭제파일 : " + id);
+    props.fileState.setFileIds(prevFileIds => prevFileIds.filter(file => file.id !== id));
   };
+  
 
   const handleDelete = () => {
     // 이미지 박스 삭제 시 빈 박스 생성
@@ -68,12 +77,14 @@ const ImageUploadBox = (props) => {
 
   const handleFileInputChange = (e) => {
     const files = e.target.files;
-    handleFiles(files);
-    // 파일이 선택되면 API를 호출하여 파일 저장
-    saveFile(files);
+    saveFile(files).then(id => {
+      handleFiles(files,id);
+      console.log("저장된 id : " + id);
+    });
   };
 
   const saveFile = (files) => {
+    return new Promise((resolve, reject) => {
     // 여기서 파일 저장 API 호출
     let formData = new FormData();
     for (let i = 0; i < files.length; i++) {
@@ -81,23 +92,28 @@ const ImageUploadBox = (props) => {
     }
 
     console.log('파일이 저장될 API 호출');
+    
     axios.post("http://localhost:3000/fileUpload", formData)
     .then(result => {
-      console.log(result.data.data);
       props.fileState.setFileIds([...props.fileState.fileIds,{ id:result.data.data, order:props.component.order, tmplType:props.component.type}]);
-      console.log(props.fileState.fileIds);
-
-      setImages([...images, { id: Date.now(), fileId: result.data.data }]); // 이미지 추가
+      
+      //setImages([...images, { id: Date.now(), fileId: result.data.data }]); // 이미지 추가
       props.clickRemoveFileIdState.setClickRemoveFileId([...props.clickRemoveFileIdState.clickRemoveFileId, result.data.data]);
+      let id = result.data.data;
+      resolve(id);
+      return id;
     })
-
+        .catch(error => {
+            reject(error);
+        });
+    });
   };
 
   return (
     <div>
       {images.length > 0 ? (
         images.map(image => (
-          <div key={image.id} className="image-container">
+          <div key={image.id} id={image.id} className="image-container">
             <img src={image.src} alt="Uploaded" />
             <button className="delete-button" onClick={() => deleteImage(image.id ,image.fileId )}>
               X

@@ -33,7 +33,7 @@ const ImageUpload6 = (props) => {
                 </div>
             </div>
         </div>
-        <button onClick={() => props.removeComponent(props.component.id, clickRemoveFileId)}>삭제</button>
+        <button type="button" onClick={() => props.removeComponent(props.component.id, clickRemoveFileId)}>삭제</button>
     </section>
   );
 };

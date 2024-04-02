@@ -9,12 +9,26 @@ import ImageUpload7 from "../imageUploadTmpl/imageUpload7";
 import ImageUpload8 from "../imageUploadTmpl/imageUpload8";
 import ImageUploadBox from "../imageUploadTmpl/ImageUploadBox";
 import { useEffect, useState } from "react";
+import '../imageUploadTmpl/imageUpload.css'; 
+import axios from 'axios';
+import Thumnail from "./thumnail/thumnail";
 function AdminWorkCreate(){
+	//video 데이터
 	const [components, setComponents] = useState([]);
+	
+	//imageUpload(video포함) 유형의 순서조정 값
 	const [componentOrder, setComponentOrder] = useState([]);
+	const [thumnailFile, setThumnailFile] = useState();
 
+	//work 데이터
+	const [work,setWork] = useState();
+	
+	//저장하려는 File의 id 값 (물리적으로는 이미 저장되어 있으며 Id 값으로 order,tmpl등의 정보를 가지고 있음, 순서는 back단에서 자동 조정됌)
 	let [fileIds, setFileIds] = useState([]);
 
+	let thumnailFileState = {
+		thumnailFile, setThumnailFile
+	}
 	let componentsState = {
 		components, setComponents
 	}
@@ -22,19 +36,22 @@ function AdminWorkCreate(){
 	let fileState = {
 		fileIds, setFileIds
 	}
-    console.log(fileIds);
 	const addComponent = (componentType) => {
-	  const newComponent = { type: componentType, id: components.length, order: componentOrder.length + 1, videoTitle:'', videoContent:'', videoUrl:''};
+	  const newComponent = { type: componentType, id: components.length, order: componentOrder.length + 1, videoId: 0, videoTitle:'', videoContent:'', videoUrl:'', videoOrd: componentOrder.length + 1};
 	  setComponents([...components, newComponent]);
 	  setComponentOrder([...componentOrder, componentType]);
 	};
   
 	const removeComponent = (id , clickRemoveFileId) => {
+
+
 		//setFileIds(prevFileIds => prevFileIds.filter(fileId => !clickRemoveFileId.includes(fileId)));
-		setFileIds(prevFileIds => prevFileIds.filter(file => !clickRemoveFileId.includes(file.id)));
+		//setFileIds(prevFileIds => prevFileIds.filter(file => !clickRemoveFileId.includes(file.id)));
+		const filteredFileIds = fileIds.filter(fileIds => fileIds.id !== id);
 		const filteredComponents = components.filter(component => component.id !== id);
 		const filteredOrder = componentOrder.filter((_, index) => index !== id);
 	
+		console.log(id);
 		// 삭제된 컴포넌트 이후의 컴포넌트들의 order 값을 재조정
 		const updatedComponents = filteredComponents.map(component => {
 		  if (component.order > id) {
@@ -42,11 +59,24 @@ function AdminWorkCreate(){
 		  }
 		  return component;
 		});
-	
+		const updatedFileIds = filteredFileIds.map(fileIds => {
+			if (fileIds.order > id) {
+			  return { ...fileIds, order: fileIds.order - 1 };
+			}
+			return fileIds;
+		  });
+		// 변경된 상태로 한 번에 업데이트
+		setFileIds(prevFileIds => prevFileIds.filter(file => !clickRemoveFileId.includes(file.id)).map(file => {
+			if (file.order > id) {
+				return { ...file, order: file.order - 1 };
+			}
+			return file;
+		}));
 		setComponents(updatedComponents);
 		setComponentOrder(filteredOrder);
 	  };
 
+	  /*
 	  const changeComponentOrder = (currentIndex, newIndex) => {
 		const newComponents = [...components];
 		const movedComponent = newComponents.splice(currentIndex, 1)[0];
@@ -75,6 +105,7 @@ function AdminWorkCreate(){
 		setComponents(updatedComponents);
 		setFileIds(updatedFileIds);
 	  };
+	  */
 
 	  const updateVideoTitleByOrder = (order, newTitle) => {
 		setComponents(prevComponents => {
@@ -125,10 +156,10 @@ function AdminWorkCreate(){
 
 	  //크레딧
 
-	  const [creditsList, setCreditsList] = useState([{ job: '', name: '', creditsNo: 0 }]);
+	  const [creditsList, setCreditsList] = useState([{ creditsJob: '', creditsName: '', creditsId: 0 }]);
 
 	  const handleAddCredit = () => {
-		const newCreditsList = [...creditsList, { job: '', name: '', creditsNo: 0 }];
+		const newCreditsList = [...creditsList, { creditsJob: '', creditsName: '', creditsId: 0 }];
 		setCreditsList(newCreditsList);
 	  };
 	
@@ -140,7 +171,22 @@ function AdminWorkCreate(){
 		newCreditsList.splice(index, 1);
 		setCreditsList(newCreditsList);
 	  };
-	
+
+	  //워크
+	  const updateWork = (title) => {
+		setWork(prevWork => ({
+			...prevWork,
+			title: title
+		  }));
+	  };
+		// useYn 업데이트 함수
+		const toggleUseYn = (value) => {
+			setWork(prevWork => ({
+			...prevWork,
+			useYn: value
+			}));
+		};
+
     return(
 
 		<div class="col-md-12 col-sm-12 ">
@@ -149,10 +195,15 @@ function AdminWorkCreate(){
 					<br />
 					<form id="form" action="/admin/work/save.do" method="post" enctype="multipart/form-data" class="form-horizontal form-label-left">
 						<div class="form-group row ">
+						<label class="control-label col-md-3 col-sm-3 ">대제목</label>
+							<div class="col-md-9 col-sm-9 ">
+								<textarea type="text" class="form-control" onChange={(e)=>{
+									updateWork(e.target.value);
+								}} placeholder="대제목을 입력해 주세요." >								
+								</textarea>
+							</div>
 							<label class="control-label col-md-3 col-sm-3 ">대표 썸네일</label>
-									<div class="col-md-9 col-sm-9 ">
-										<input type="file" id="thumb_nail" name="thumb_nail" class="form-control" />
-									</div>
+							<Thumnail thumnailFileState={thumnailFileState}/>
 
 						</div>
 						<div class="">
@@ -178,12 +229,17 @@ function AdminWorkCreate(){
 								{component.type === '6' && <ImageUpload6 order={OrderNumber} index={index} fileState={fileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
 								{component.type === '7' && <ImageUpload7 order={OrderNumber} index={index} fileState={fileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
 								{component.type === '8' && <ImageUpload8 order={OrderNumber} index={index} fileState={fileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
-								{index !== 0 && (
+								
+								{/*
+								index !== 0 && (
 									<button type="button" onClick={() => changeComponentOrder(index, index - 1)}>위로</button>
-								)}
-								{index !== components.length - 1 && (
+								)
+								*/}
+								{/*
+								index !== components.length - 1 && (
 									<button type="button" onClick={() => changeComponentOrder(index, index + 1)}>아래로</button>
-								)}
+								)
+								*/}
 							</div>
 							);
 						})}
@@ -196,13 +252,13 @@ function AdminWorkCreate(){
 									<div className="creditArea" key={index} data-ord={index + 1} style={{ display: "flex" }}>
 									<input
 									type="text"
-									name="job"
+									name="creditsJob"
 									className="form-control"
-									value={credit.job}
+									value={credit.creditsJob}
 									placeholder=" "
 									onChange={(e) => {
 										const newCreditsList = [...creditsList];
-										newCreditsList[index].job = e.target.value;
+										newCreditsList[index].creditsJob = e.target.value;
 										setCreditsList(newCreditsList);
 									}}
 									/>
@@ -210,11 +266,11 @@ function AdminWorkCreate(){
 									type="text"
 									name="name"
 									className="form-control"
-									value={credit.name}
+									value={credit.creditsName}
 									placeholder=" "
 									onChange={(e) => {
 										const newCreditsList = [...creditsList];
-										newCreditsList[index].name = e.target.value;
+										newCreditsList[index].creditsName = e.target.value;
 										setCreditsList(newCreditsList);
 									}}
 									/>
@@ -237,16 +293,30 @@ function AdminWorkCreate(){
 								<label class="col-md-3 col-sm-3  control-label">공개 여부
 								</label>
 								<div class="col-md-9 col-sm-9 ">
-									<div >
-										<label>
-											<input type="radio" class="flat" name="use_yn" value="Y" /> 공개
-										</label>
-									</div>
-									<div >
-										<label>
-											<input type="radio" class="flat" name="use_yn" value="N" /> 비공개
-										</label>
-									</div>
+								<div>
+									<label>
+									<input
+										type="radio"
+										className="flat"
+										name="use_yn"
+										value="Y"
+										//checked={work.useYn === 'Y'}
+										onChange={() => toggleUseYn('Y')}
+									/> 공개
+									</label>
+								</div>
+								<div>
+									<label>
+									<input
+										type="radio"
+										className="flat"
+										name="use_yn"
+										value="N"
+										//checked={work.useYn === 'N'}
+										onChange={() => toggleUseYn('N')}
+									/> 비공개
+									</label>
+								</div>
 								</div>
 							</div>
 						<div class="ln_solid"></div>
@@ -255,17 +325,56 @@ function AdminWorkCreate(){
 								<button type="button" onClick={()=>{
 									
 									for(let i=0; i<components.length; i++){
-									console.log("컴포넌트 결과 :" + JSON.stringify(components[i],null,2));
+										console.log("컴포넌트 결과 :" + JSON.stringify(components[i],null,2));
 									}
+									
+									
+									console.log("썸네일 결과 결과 :" + JSON.stringify(thumnailFile,null,2));
+									
+									
 									console.log("결과");
 									for(let i=0; i<fileIds.length; i++){
-										console.log("저장 할 파일 : " + fileIds[i].id + "order : " + fileIds[i].order);
+										console.log("저장 할 파일 : " + JSON.stringify(fileIds[i],null,2));
 									}
 									for(let i=0; i<creditsList.length; i++){
 										console.log("크레딧 결과 : " + JSON.stringify(creditsList[i],null,2));
 									}
+
+									let videoForms = [];
+									for(let i=0; i<components.length; i++){
+										console.log("컴포넌트 결과 :" + JSON.stringify(components[i],null,2));
+
+										let videoForm = {
+											videoId : components[i].videoId,
+											videoTitle : components[i].videoTitle,
+											videoContent : components[i].videoContent,
+											videoUrl : components[i].videoUrl
+										}
+										videoForms.push(videoForm);
+									}
+
+
+									for(let i=0; i<videoForms.length; i++){
+										console.log("videoForms 확인 " + JSON.stringify(videoForms[i],null,2));
+									}
+									let formData = new FormData();
+									formData.append('videoForms', components);
+									formData.append('creditsForms', creditsList);
+
+									console.log('API 호출');
+									/*
+									axios.post("http://localhost:3000/api/admin/work/save",formData,{
+										headers: {'Content-Type': 'application/json', charset: 'utf-8'},
+									})
+									.then(result => {
+									  console.log(result);
+
+									})
+*/
 								}}class="btn btn-success">등록</button>
 								<button type="button" class="btn btn-primary">취소</button>
+
+								
 							</div>
 						</div>
 					</form>
