@@ -21,15 +21,15 @@ const ImageUpload7 = (props) => {
                 <div>
                     <div className="image_tmpl7-1">
                         <div className="image_flex">
-                            <ImageUploadBox fileState={props.fileState} component={props.component} clickRemoveFileIdState={clickRemoveFileIdState}/>
-                            <ImageUploadBox fileState={props.fileState} component={props.component} clickRemoveFileIdState={clickRemoveFileIdState}/>
-                            <ImageUploadBox fileState={props.fileState} component={props.component} clickRemoveFileIdState={clickRemoveFileIdState}/>
+                            <ImageUploadBox picOrd={1} removeFileFormState={props.removeFileFormState} saveFileState={props.saveFileState} component={props.component} clickRemoveFileIdState={clickRemoveFileIdState}/>
+                            <ImageUploadBox picOrd={2} removeFileFormState={props.removeFileFormState} saveFileState={props.saveFileState} component={props.component} clickRemoveFileIdState={clickRemoveFileIdState}/>
+                            <ImageUploadBox picOrd={3} removeFileFormState={props.removeFileFormState} saveFileState={props.saveFileState} component={props.component} clickRemoveFileIdState={clickRemoveFileIdState}/>
                         </div>
                     </div>
                     <div className="image_tmpl7-2">
                         <div className="image_flex">
-                            <ImageUploadBox fileState={props.fileState} component={props.component} clickRemoveFileIdState={clickRemoveFileIdState}/>
-                            <ImageUploadBox fileState={props.fileState} component={props.component} clickRemoveFileIdState={clickRemoveFileIdState}/>
+                            <ImageUploadBox picOrd={4} removeFileFormState={props.removeFileFormState} saveFileState={props.saveFileState} component={props.component} clickRemoveFileIdState={clickRemoveFileIdState}/>
+                            <ImageUploadBox picOrd={5} removeFileFormState={props.removeFileFormState} saveFileState={props.saveFileState} component={props.component} clickRemoveFileIdState={clickRemoveFileIdState}/>
                         </div>
                     </div>
                 </div>

@@ -49,17 +49,13 @@ function AdminWork(){
         <div class="right_col" role="main" style={{ minHeight: "476.25px" }}>
             <div>
             <div class="page-title">
-                <div class="title_left">
+                <div class="title_left" style={{textAlign:"left" , marginLeft: "10px"}}>
                     <h3>WORK</h3>
-                </div>
-                <div class="title_right">
-                    <div class="col-md-5 col-sm-5   form-group pull-right top_search">
-                    </div>
                 </div>
             </div>
             <Routes>
                 <Route path="/init" element={<AdminWorkList pagingProps={pagingProps}/>} /> 
-                <Route path="/view/:id" element={<AdminWorkView pagingProps={pagingProps}/>}/> 
+                <Route path="/view/:id" element={<AdminWorkCreate pagingProps={pagingProps}/>}/> 
                 <Route path="/create" element={<AdminWorkCreate pagingProps={pagingProps}/>}/> 
             </Routes>
                             

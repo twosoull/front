@@ -12,30 +12,53 @@ import { useEffect, useState } from "react";
 import '../imageUploadTmpl/imageUpload.css'; 
 import axios from 'axios';
 import Thumnail from "./thumnail/thumnail";
+import { useLocation, useParams } from "react-router-dom";
+import isEmpty from "../../utils/util";
 function AdminWorkCreate(){
-	//video 데이터
-	const [components, setComponents] = useState([]);
+
+	const findParams = useParams();
+    let workId = findParams.id;
+
+	console.log("workId =" + workId);
+	if(!isEmpty(workId)){
+		let url = "/api/admin/work/findId";
+		let params = { workId : workId}
 	
-	//imageUpload(video포함) 유형의 순서조정 값
-	const [componentOrder, setComponentOrder] = useState([]);
-	const [thumnailFile, setThumnailFile] = useState();
+		//let [contactBudget ,setContactBudget] = useState("");
+	
+		axios.get(url,{params}).then((result) => {
+			console.log(result.data);
+	
+			let status = result.data.status;
+			let data = result.data.data;
+			
+		})
+	}
 
 	//work 데이터
-	const [work,setWork] = useState();
-	
-	//저장하려는 File의 id 값 (물리적으로는 이미 저장되어 있으며 Id 값으로 order,tmpl등의 정보를 가지고 있음, 순서는 back단에서 자동 조정됌)
-	let [fileIds, setFileIds] = useState([]);
-
-	let thumnailFileState = {
-		thumnailFile, setThumnailFile
-	}
+	const [workForm,setWorkForm] = useState({id:0, workTitle:'', useYn:'Y'});
+	//video 데이터
+	const [components, setComponents] = useState([]);
 	let componentsState = {
 		components, setComponents
 	}
-
-	let fileState = {
-		fileIds, setFileIds
+	//저장하려는 File의 id 값 (물리적으로는 이미 저장되어 있으며 Id 값으로 order,tmpl등의 정보를 가지고 있음, 순서는 back단에서 자동 조정됌)
+	const [saveFileForms, setSaveFileForms] = useState([]);
+	let saveFileState = {
+		saveFileForms, setSaveFileForms
 	}
+	//삭제 된 파일의 id리스트
+	const [removeFileForms,setRemoveFileForms] = useState([]);
+	let removeFileFormState = {
+		removeFileForms,setRemoveFileForms
+	}
+	//imageUpload(video포함) 유형의 순서조정 값
+	const [componentOrder, setComponentOrder] = useState([]);
+	const [thumbnailFileForm, setThumbnailFileForm] = useState();
+	let thumbnailFileFormState = {
+		thumbnailFileForm, setThumbnailFileForm
+	}
+
 	const addComponent = (componentType) => {
 	  const newComponent = { type: componentType, id: components.length, order: componentOrder.length + 1, videoId: 0, videoTitle:'', videoContent:'', videoUrl:'', videoOrd: componentOrder.length + 1};
 	  setComponents([...components, newComponent]);
@@ -45,9 +68,9 @@ function AdminWorkCreate(){
 	const removeComponent = (id , clickRemoveFileId) => {
 
 
-		//setFileIds(prevFileIds => prevFileIds.filter(fileId => !clickRemoveFileId.includes(fileId)));
-		//setFileIds(prevFileIds => prevFileIds.filter(file => !clickRemoveFileId.includes(file.id)));
-		const filteredFileIds = fileIds.filter(fileIds => fileIds.id !== id);
+		//setSaveFileForms(prevSaveFileForm => prevSaveFileForm.filter(fileId => !clickRemoveFileId.includes(fileId)));
+		//setSaveFileForms(prevSaveFileForm => prevSaveFileForm.filter(file => !clickRemoveFileId.includes(file.id)));
+		const filteredSaveFileForm = saveFileForms.filter(saveFileForms => saveFileForms.id !== id);
 		const filteredComponents = components.filter(component => component.id !== id);
 		const filteredOrder = componentOrder.filter((_, index) => index !== id);
 	
@@ -55,25 +78,28 @@ function AdminWorkCreate(){
 		// 삭제된 컴포넌트 이후의 컴포넌트들의 order 값을 재조정
 		const updatedComponents = filteredComponents.map(component => {
 		  if (component.order > id) {
-			return { ...component, order: component.order - 1 };
+			return { ...component, order: component.order - 1 , videoOrd: component.videoOrd - 1};
 		  }
 		  return component;
 		});
-		const updatedFileIds = filteredFileIds.map(fileIds => {
-			if (fileIds.order > id) {
-			  return { ...fileIds, order: fileIds.order - 1 };
+		/*
+		const updatedSaveFileForm = filteredSaveFileForm.map(saveFileForms => {
+			if (saveFileForms.order > id) {
+			  return { ...saveFileForms, order: saveFileForms.order - 1 };
 			}
-			return fileIds;
-		  });
+			return saveFileForms;
+		  });*/
 		// 변경된 상태로 한 번에 업데이트
-		setFileIds(prevFileIds => prevFileIds.filter(file => !clickRemoveFileId.includes(file.id)).map(file => {
-			if (file.order > id) {
-				return { ...file, order: file.order - 1 };
+		setSaveFileForms(prevSaveFileForm => prevSaveFileForm.filter(file => !clickRemoveFileId.includes(file.id)).map(file => {
+			if (file.ord > id) {
+				return { ...file, ord: file.ord - 1 };
 			}
 			return file;
 		}));
 		setComponents(updatedComponents);
 		setComponentOrder(filteredOrder);
+		const updatedRemoveFileFormsSet = new Set([...removeFileForms, ...clickRemoveFileId]);
+		removeFileFormState.setRemoveFileForms(Array.from(updatedRemoveFileFormsSet));
 	  };
 
 	  /*
@@ -87,10 +113,10 @@ function AdminWorkCreate(){
 		  return { ...component, order: index + 1 };
 		});
 
-		const newFileIds = [...fileIds];
+		const newSaveFileForm = [...saveFileForms];
 
 		// 순서 변경 후 파일의 order 값 업데이트
-		const updatedFileIds = fileIds.map(file => {
+		const updatedSaveFileForm = saveFileForms.map(file => {
 			const { id, order } = file;
 			if (order === currentIndex + 1) {
 				return { id, order: newIndex + 1 };
@@ -103,7 +129,7 @@ function AdminWorkCreate(){
 			}
 		});
 		setComponents(updatedComponents);
-		setFileIds(updatedFileIds);
+		setSaveFileForms(updatedSaveFileForm);
 	  };
 	  */
 
@@ -156,32 +182,32 @@ function AdminWorkCreate(){
 
 	  //크레딧
 
-	  const [creditsList, setCreditsList] = useState([{ creditsJob: '', creditsName: '', creditsId: 0 }]);
+	  const [creditsForms, setCreditsForms] = useState([{ creditsJob: '', creditsName: '', creditsId: 0 }]);
 
 	  const handleAddCredit = () => {
-		const newCreditsList = [...creditsList, { creditsJob: '', creditsName: '', creditsId: 0 }];
-		setCreditsList(newCreditsList);
+		const newCreditsForms = [...creditsForms, { creditsJob: '', creditsName: '', creditsId: 0 }];
+		setCreditsForms(newCreditsForms);
 	  };
 	
 	  const handleRemoveCredit = (index) => {
 		if (index === 0) {
 		  return; // 첫 번째 요소는 삭제할 수 없도록 처리
 		}
-		const newCreditsList = [...creditsList];
-		newCreditsList.splice(index, 1);
-		setCreditsList(newCreditsList);
+		const newCreditsForms = [...creditsForms];
+		newCreditsForms.splice(index, 1);
+		setCreditsForms(newCreditsForms);
 	  };
 
 	  //워크
 	  const updateWork = (title) => {
-		setWork(prevWork => ({
+		setWorkForm(prevWork => ({
 			...prevWork,
-			title: title
+			workTitle: title
 		  }));
 	  };
 		// useYn 업데이트 함수
 		const toggleUseYn = (value) => {
-			setWork(prevWork => ({
+			setWorkForm(prevWork => ({
 			...prevWork,
 			useYn: value
 			}));
@@ -193,7 +219,7 @@ function AdminWorkCreate(){
 			<div class="x_panel">
 				<div class="x_content">
 					<br />
-					<form id="form" action="/admin/work/save.do" method="post" enctype="multipart/form-data" class="form-horizontal form-label-left">
+					<form id="form"  method="post" enctype="multipart/form-data" class="form-horizontal form-label-left">
 						<div class="form-group row ">
 						<label class="control-label col-md-3 col-sm-3 ">대제목</label>
 							<div class="col-md-9 col-sm-9 ">
@@ -203,7 +229,7 @@ function AdminWorkCreate(){
 								</textarea>
 							</div>
 							<label class="control-label col-md-3 col-sm-3 ">대표 썸네일</label>
-							<Thumnail thumnailFileState={thumnailFileState}/>
+							<Thumnail removeFileFormState={removeFileFormState} thumbnailFileFormState={thumbnailFileFormState}/>
 
 						</div>
 						<div class="">
@@ -221,14 +247,14 @@ function AdminWorkCreate(){
               				const OrderNumber = component.order;
 						return (
 							<div key={component.id}>
-								{component.type === '1' && <ImageUpload1 order={OrderNumber} index={index} fileState={fileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
-								{component.type === '2' && <ImageUpload2 order={OrderNumber} index={index} fileState={fileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
-								{component.type === '3' && <ImageUpload3 order={OrderNumber} index={index} fileState={fileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
-								{component.type === '4' && <ImageUpload4 order={OrderNumber} index={index} fileState={fileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
-								{component.type === '5' && <ImageUpload5 order={OrderNumber} index={index} fileState={fileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
-								{component.type === '6' && <ImageUpload6 order={OrderNumber} index={index} fileState={fileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
-								{component.type === '7' && <ImageUpload7 order={OrderNumber} index={index} fileState={fileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
-								{component.type === '8' && <ImageUpload8 order={OrderNumber} index={index} fileState={fileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
+								{component.type === '1' && <ImageUpload1 order={OrderNumber} index={index} removeFileFormState={removeFileFormState} saveFileState={saveFileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
+								{component.type === '2' && <ImageUpload2 order={OrderNumber} index={index} removeFileFormState={removeFileFormState} saveFileState={saveFileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
+								{component.type === '3' && <ImageUpload3 order={OrderNumber} index={index} removeFileFormState={removeFileFormState} saveFileState={saveFileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
+								{component.type === '4' && <ImageUpload4 order={OrderNumber} index={index} removeFileFormState={removeFileFormState} saveFileState={saveFileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
+								{component.type === '5' && <ImageUpload5 order={OrderNumber} index={index} removeFileFormState={removeFileFormState} saveFileState={saveFileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
+								{component.type === '6' && <ImageUpload6 order={OrderNumber} index={index} removeFileFormState={removeFileFormState} saveFileState={saveFileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
+								{component.type === '7' && <ImageUpload7 order={OrderNumber} index={index} removeFileFormState={removeFileFormState} saveFileState={saveFileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
+								{component.type === '8' && <ImageUpload8 order={OrderNumber} index={index} removeFileFormState={removeFileFormState} saveFileState={saveFileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
 								
 								{/*
 								index !== 0 && (
@@ -248,7 +274,7 @@ function AdminWorkCreate(){
 								<label class="control-label col-md-3 col-sm-3 ">크레딧
 								</label>
 								<div class="col-md-6 col-sm-6 form-group row inputButtonArea">
-								{creditsList.map((credit, index) => (
+								{creditsForms.map((credit, index) => (
 									<div className="creditArea" key={index} data-ord={index + 1} style={{ display: "flex" }}>
 									<input
 									type="text"
@@ -257,9 +283,9 @@ function AdminWorkCreate(){
 									value={credit.creditsJob}
 									placeholder=" "
 									onChange={(e) => {
-										const newCreditsList = [...creditsList];
-										newCreditsList[index].creditsJob = e.target.value;
-										setCreditsList(newCreditsList);
+										const newCreditsForms = [...creditsForms];
+										newCreditsForms[index].creditsJob = e.target.value;
+										setCreditsForms(newCreditsForms);
 									}}
 									/>
 									<input
@@ -269,9 +295,9 @@ function AdminWorkCreate(){
 									value={credit.creditsName}
 									placeholder=" "
 									onChange={(e) => {
-										const newCreditsList = [...creditsList];
-										newCreditsList[index].creditsName = e.target.value;
-										setCreditsList(newCreditsList);
+										const newCreditsForms = [...creditsForms];
+										newCreditsForms[index].creditsName = e.target.value;
+										setCreditsForms(newCreditsForms);
 									}}
 									/>
 									{index !== 0 && ( // 첫 번째 요소일 때 삭제 버튼을 표시하지 않음
@@ -300,7 +326,7 @@ function AdminWorkCreate(){
 										className="flat"
 										name="use_yn"
 										value="Y"
-										//checked={work.useYn === 'Y'}
+										checked={workForm.useYn === 'Y'}
 										onChange={() => toggleUseYn('Y')}
 									/> 공개
 									</label>
@@ -312,7 +338,7 @@ function AdminWorkCreate(){
 										className="flat"
 										name="use_yn"
 										value="N"
-										//checked={work.useYn === 'N'}
+										checked={workForm.useYn === 'N'}
 										onChange={() => toggleUseYn('N')}
 									/> 비공개
 									</label>
@@ -324,53 +350,69 @@ function AdminWorkCreate(){
 							<div class="col-md-9 col-sm-9  offset-md-3">
 								<button type="button" onClick={()=>{
 									
-									for(let i=0; i<components.length; i++){
-										console.log("컴포넌트 결과 :" + JSON.stringify(components[i],null,2));
-									}
-									
-									
-									console.log("썸네일 결과 결과 :" + JSON.stringify(thumnailFile,null,2));
-									
-									
-									console.log("결과");
-									for(let i=0; i<fileIds.length; i++){
-										console.log("저장 할 파일 : " + JSON.stringify(fileIds[i],null,2));
-									}
-									for(let i=0; i<creditsList.length; i++){
-										console.log("크레딧 결과 : " + JSON.stringify(creditsList[i],null,2));
-									}
+									console.log("work데이터 " + JSON.stringify(workForm,null,2));
 
 									let videoForms = [];
 									for(let i=0; i<components.length; i++){
-										console.log("컴포넌트 결과 :" + JSON.stringify(components[i],null,2));
-
 										let videoForm = {
 											videoId : components[i].videoId,
 											videoTitle : components[i].videoTitle,
 											videoContent : components[i].videoContent,
-											videoUrl : components[i].videoUrl
+											videoUrl : components[i].videoUrl,
+											videoOrd : components[i].videoOrd,
+											videoType : components[i].type
 										}
 										videoForms.push(videoForm);
 									}
-
-
+									console.log("videoForms 확인 ")
 									for(let i=0; i<videoForms.length; i++){
-										console.log("videoForms 확인 " + JSON.stringify(videoForms[i],null,2));
+										console.log(i + " : " + JSON.stringify(videoForms[i],null,2));
 									}
-									let formData = new FormData();
-									formData.append('videoForms', components);
-									formData.append('creditsForms', creditsList);
-
-									console.log('API 호출');
 									/*
-									axios.post("http://localhost:3000/api/admin/work/save",formData,{
-										headers: {'Content-Type': 'application/json', charset: 'utf-8'},
-									})
+									for(let i=0; i<components.length; i++){
+										console.log("컴포넌트 결과 :" + JSON.stringify(components[i],null,2));
+									}
+									*/
+									console.log("크레딧 결과 : " )
+									for(let i=0; i<creditsForms.length; i++){
+										console.log(i + " : " + JSON.stringify(creditsForms[i],null,2));
+									}
+									console.log("썸네일 결과 결과 :" + JSON.stringify(thumbnailFileForm,null,2));
+									
+									
+									console.log("저장 할 파일 : ");
+									for(let i=0; i<saveFileForms.length; i++){
+										console.log(i + ": " + JSON.stringify(saveFileForms[i],null,2));
+									}
+
+									
+									console.log("removefile 확인");
+									for(let i=0; i < removeFileForms.length; i++){
+										console.log(i + ": " + JSON.stringify(removeFileForms[i],null,2));
+									}
+
+									/*
+									let formData = new FormData();
+									formData.append('workForm', work);
+									formData.append('videoForms', components);
+									formData.append('creditsForms', creditsForms);
+*/
+									console.log('API 호출');
+									
+									axios.post("http://localhost:3000/api/admin/work/save",{
+										workForm : workForm,
+										videoForms : videoForms,
+										creditsForms : creditsForms,
+										saveFileForms : saveFileForms,
+										thumbnailFileForm : thumbnailFileForm,
+										removeFileForms : removeFileForms
+									}
+									)
 									.then(result => {
 									  console.log(result);
 
 									})
-*/
+
 								}}class="btn btn-success">등록</button>
 								<button type="button" class="btn btn-primary">취소</button>
 

@@ -62,7 +62,8 @@ function Thumnail(props){
       const updatedImages = images.filter(img => img.id !== id);
       setImages(updatedImages);
       console.log("삭제파일 : " + id);
-      props.thumnailFileState.setThumnailFile({id:0,cd:'thumb_nail'});
+      props.thumbnailFileFormState.setThumbnailFileForm({id:0,cd:'thumb_nail'});
+      props.removeFileFormState.setRemoveFileForms([...props.removeFileFormState.removeFileForms, id]);
     };
     
   
@@ -96,11 +97,11 @@ function Thumnail(props){
         
         axios.post("http://localhost:3000/fileUpload", formData)
         .then(result => {
-          props.thumnailFileState.setThumnailFile(prevThumnailFile => ({
+          props.thumbnailFileFormState.setThumbnailFileForm(prevThumnailFile => ({
             ...prevThumnailFile,
             id:result.data.data, cd:'thumb_nail'
             }));
-          //props.thumnailFileState.setThumnailFile([...props.thumnailFileState.thumnailFile,{ id:result.data.data, cd:'thumb_nail'}]);
+          //props.thumbnailFileFormState.setThumbnailFileForm([...props.thumbnailFileFormState.thumnailFile,{ id:result.data.data, cd:'thumb_nail'}]);
           let id = result.data.data;
           //setImages([...images, { id: Date.now(), fileId: result.data.data }]); // 이미지 추가
           //props.clickRemoveFileIdState.setClickRemoveFileId([...props.clickRemoveFileIdState.clickRemoveFileId, result.data.data]);

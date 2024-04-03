@@ -44,9 +44,10 @@ const ImageUploadBox = (props) => {
         reader.onload = (event) => {
           newImages.push({
             id: id,
-            src: event.target.result,
+            filePath: event.target.result,
             file: file, // 파일 정보 저장
-            filsId : id
+            filsId : id,
+            videoId : 0
           });
           loadedCount++;
           if (loadedCount === files.length) {
@@ -62,7 +63,8 @@ const ImageUploadBox = (props) => {
     const updatedImages = images.filter(img => img.id !== id);
     setImages(updatedImages);
     console.log("삭제파일 : " + id);
-    props.fileState.setFileIds(prevFileIds => prevFileIds.filter(file => file.id !== id));
+    props.saveFileState.setSaveFileForms(prevSaveFileForm => prevSaveFileForm.filter(file => file.id !== id));
+    props.removeFileFormState.setRemoveFileForms([...props.removeFileFormState.removeFileForms, id]);
   };
   
 
@@ -95,7 +97,7 @@ const ImageUploadBox = (props) => {
     
     axios.post("http://localhost:3000/fileUpload", formData)
     .then(result => {
-      props.fileState.setFileIds([...props.fileState.fileIds,{ id:result.data.data, order:props.component.order, tmplType:props.component.type}]);
+      props.saveFileState.setSaveFileForms([...props.saveFileState.saveFileForms,{ id:result.data.data, ord:props.component.order, tmplType:props.component.type, picOrd:props.picOrd}]);
       
       //setImages([...images, { id: Date.now(), fileId: result.data.data }]); // 이미지 추가
       props.clickRemoveFileIdState.setClickRemoveFileId([...props.clickRemoveFileIdState.clickRemoveFileId, result.data.data]);
@@ -114,7 +116,7 @@ const ImageUploadBox = (props) => {
       {images.length > 0 ? (
         images.map(image => (
           <div key={image.id} id={image.id} className="image-container">
-            <img src={image.src} alt="Uploaded" />
+            <img src={image.filePath} alt="Uploaded" />
             <button className="delete-button" onClick={() => deleteImage(image.id ,image.fileId )}>
               X
             </button>

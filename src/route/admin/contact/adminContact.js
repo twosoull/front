@@ -49,7 +49,7 @@ function AdminContact() {
         <div class="right_col" role="main" style={{ minHeight: "814px" }}>
             <div class="">
                 <div class="page-title">
-                    <div class="title_left">
+                    <div class="title_left"  style={{textAlign:"left" , marginLeft: "10px"}}>
                         <h3>CONTACT</h3>
                     </div>
                     <div class="title_right">

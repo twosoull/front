@@ -19,7 +19,7 @@ const ImageUpload1 = (props) => {
         <div class="form-group row ">
           <label class="control-label col-md-3 col-sm-3 ">이미지</label>
           <div id="file101" class="col-md-6 col-sm-6 form-group row">
-            <ImageUploadBox fileState={props.fileState} component={props.component} clickRemoveFileIdState={clickRemoveFileIdState} />
+            <ImageUploadBox picOrd={1} removeFileFormState={props.removeFileFormState} saveFileState={props.saveFileState} component={props.component} clickRemoveFileIdState={clickRemoveFileIdState} />
           </div>
         </div>
       </div>
