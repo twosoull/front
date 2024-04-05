@@ -1,11 +1,21 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './imageUpload.css'; // 위의 CSS 코드를 styles.css 파일로 이동
 import axios from 'axios';
+import isEmpty from '../../utils/util';
 const ImageUploadBox = (props) => {
   const [highlighted, setHighlighted] = useState(false);
 
   //update시에 불러오는 props.file의 src를 작성해주고 데이터를 images에 넣어주면 된다.
   const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    if(!isEmpty(props.file)){
+      setImages([props.file]);
+      console.log("박스확인");
+      console.log(props.file);
+    }
+	}, [])
+
   const fileInputRef = useRef(null);
   
   const preventDefaults = (e) => {
@@ -97,7 +107,7 @@ const ImageUploadBox = (props) => {
     
     axios.post("http://localhost:3000/fileUpload", formData)
     .then(result => {
-      props.saveFileState.setSaveFileForms([...props.saveFileState.saveFileForms,{ id:result.data.data, ord:props.component.order, tmplType:props.component.type, picOrd:props.picOrd}]);
+      props.saveFileState.setSaveFileForms([...props.saveFileState.saveFileForms,{ id:result.data.data, ord:props.videoForm.ord, tmplType:props.videoForm.videoType, picOrd:props.picOrd}]);
       
       //setImages([...images, { id: Date.now(), fileId: result.data.data }]); // 이미지 추가
       props.clickRemoveFileIdState.setClickRemoveFileId([...props.clickRemoveFileIdState.clickRemoveFileId, result.data.data]);
@@ -114,14 +124,18 @@ const ImageUploadBox = (props) => {
   return (
     <div>
       {images.length > 0 ? (
-        images.map(image => (
-          <div key={image.id} id={image.id} className="image-container">
-            <img src={image.filePath} alt="Uploaded" />
-            <button className="delete-button" onClick={() => deleteImage(image.id ,image.fileId )}>
-              X
-            </button>
-          </div>
-        ))
+        images.map(image => {
+          // 이미지 경로를 생성
+          return (
+            <div key={image.id} id={image.id} className="image-container">
+              {/* 이미지를 렌더링하고 생성한 경로를 사용 */}
+              <img src={image.filePath} alt="Uploaded" />
+              <button className="delete-button" onClick={() => deleteImage(image.id ,image.fileId )}>
+                X
+              </button>
+            </div>
+          );
+        })
       ) : (
         <div
           id="drop-area"

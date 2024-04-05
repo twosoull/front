@@ -15,32 +15,12 @@ import Thumnail from "./thumnail/thumnail";
 import { useLocation, useParams } from "react-router-dom";
 import isEmpty from "../../utils/util";
 function AdminWorkCreate(){
-
-	const findParams = useParams();
-    let workId = findParams.id;
-
-	console.log("workId =" + workId);
-	if(!isEmpty(workId)){
-		let url = "/api/admin/work/findId";
-		let params = { workId : workId}
-	
-		//let [contactBudget ,setContactBudget] = useState("");
-	
-		axios.get(url,{params}).then((result) => {
-			console.log(result.data);
-	
-			let status = result.data.status;
-			let data = result.data.data;
-			
-		})
-	}
-
 	//work 데이터
 	const [workForm,setWorkForm] = useState({id:0, workTitle:'', useYn:'Y'});
 	//video 데이터
-	const [components, setComponents] = useState([]);
-	let componentsState = {
-		components, setComponents
+	const [videoForms, setVideoForms] = useState([]);
+	let videoFormsState = {
+		videoForms, setVideoForms
 	}
 	//저장하려는 File의 id 값 (물리적으로는 이미 저장되어 있으며 Id 값으로 order,tmpl등의 정보를 가지고 있음, 순서는 back단에서 자동 조정됌)
 	const [saveFileForms, setSaveFileForms] = useState([]);
@@ -59,9 +39,32 @@ function AdminWorkCreate(){
 		thumbnailFileForm, setThumbnailFileForm
 	}
 
+	const findParams = useParams();
+    let workId = findParams.id;
+	console.log("workId =" + workId);
+	useEffect(() => {
+		if(!isEmpty(workId)){
+			let url = "/api/admin/work/findId";
+			let params = { workId : workId}
+		
+			//let [contactBudget ,setContactBudget] = useState("");
+		
+			axios.get(url,{params}).then((result) => {
+				console.log(result.data);
+		
+				let status = result.data.status;
+				let data = result.data.data;
+				setWorkForm({id:result.data.data.id , workTitle:result.data.data.workTitle, useYn:result.data.data.useYn});
+				setVideoForms(result.data.data.videos);
+			})
+		}
+	}, [])
+	console.log("담은 데이터 확인");
+	console.log(JSON.stringify(workForm,null,2));
+	console.log(JSON.stringify(videoForms,null,2));
 	const addComponent = (componentType) => {
-	  const newComponent = { type: componentType, id: components.length, order: componentOrder.length + 1, videoId: 0, videoTitle:'', videoContent:'', videoUrl:'', videoOrd: componentOrder.length + 1};
-	  setComponents([...components, newComponent]);
+	  const newComponent = { videoType: componentType, id: videoForms.length, ord: componentOrder.length + 1, videoId: 0, videoTitle:'', videoContent:'', videoUrl:'', videoOrd: componentOrder.length + 1 , files:[]};
+	  setVideoForms([...videoForms, newComponent]);
 	  setComponentOrder([...componentOrder, componentType]);
 	};
   
@@ -71,16 +74,16 @@ function AdminWorkCreate(){
 		//setSaveFileForms(prevSaveFileForm => prevSaveFileForm.filter(fileId => !clickRemoveFileId.includes(fileId)));
 		//setSaveFileForms(prevSaveFileForm => prevSaveFileForm.filter(file => !clickRemoveFileId.includes(file.id)));
 		const filteredSaveFileForm = saveFileForms.filter(saveFileForms => saveFileForms.id !== id);
-		const filteredComponents = components.filter(component => component.id !== id);
+		const filteredComponents = videoForms.filter(videoForm => videoForm.id !== id);
 		const filteredOrder = componentOrder.filter((_, index) => index !== id);
 	
 		console.log(id);
 		// 삭제된 컴포넌트 이후의 컴포넌트들의 order 값을 재조정
-		const updatedComponents = filteredComponents.map(component => {
-		  if (component.order > id) {
-			return { ...component, order: component.order - 1 , videoOrd: component.videoOrd - 1};
+		const updatedComponents = filteredComponents.map(videoForm => {
+		  if (videoForm.ord > id) {
+			return { ...videoForm, ord: videoForm.order - 1 , videoOrd: videoForm.videoOrd - 1};
 		  }
-		  return component;
+		  return videoForm;
 		});
 		/*
 		const updatedSaveFileForm = filteredSaveFileForm.map(saveFileForms => {
@@ -96,7 +99,7 @@ function AdminWorkCreate(){
 			}
 			return file;
 		}));
-		setComponents(updatedComponents);
+		setVideoForms(updatedComponents);
 		setComponentOrder(filteredOrder);
 		const updatedRemoveFileFormsSet = new Set([...removeFileForms, ...clickRemoveFileId]);
 		removeFileFormState.setRemoveFileForms(Array.from(updatedRemoveFileFormsSet));
@@ -104,7 +107,7 @@ function AdminWorkCreate(){
 
 	  /*
 	  const changeComponentOrder = (currentIndex, newIndex) => {
-		const newComponents = [...components];
+		const newComponents = [...videoForms];
 		const movedComponent = newComponents.splice(currentIndex, 1)[0];
 		newComponents.splice(newIndex, 0, movedComponent);
 	  
@@ -128,47 +131,47 @@ function AdminWorkCreate(){
 				return { id, order };
 			}
 		});
-		setComponents(updatedComponents);
+		setVideoForms(updatedComponents);
 		setSaveFileForms(updatedSaveFileForm);
 	  };
 	  */
 
-	  const updateVideoTitleByOrder = (order, newTitle) => {
-		setComponents(prevComponents => {
+	  const updateVideoTitleByOrder = (ord, newTitle) => {
+		setVideoForms(prevComponents => {
 		  // 배열을 복제하여 수정
-		  const updatedComponents = prevComponents.map(component => {
+		  const updatedComponents = prevComponents.map(videoForm => {
 			// order 값이 3일 때 해당 객체의 title을 변경
-			if (component.order === order) {
-			  return { ...component, videoTitle: newTitle };
+			if (videoForm.ord === ord) {
+			  return { ...videoForm, videoTitle: newTitle };
 			}
-			return component; // order 값이 3이 아닌 경우, 기존 객체 그대로 반환
+			return videoForm; // order 값이 3이 아닌 경우, 기존 객체 그대로 반환
 		  });
 		  return updatedComponents;
 		});
 	  };
 
-	  const updateVideoContentByOrder = (order, newContent) => {
-		setComponents(prevComponents => {
+	  const updateVideoContentByOrder = (ord, newContent) => {
+		setVideoForms(prevComponents => {
 		  // 배열을 복제하여 수정
-		  const updatedComponents = prevComponents.map(component => {
+		  const updatedComponents = prevComponents.map(videoForm => {
 			// order 값이 3일 때 해당 객체의 title을 변경
-			if (component.order === order) {
-			  return { ...component, videoContent : newContent };
+			if (videoForm.ord === ord) {
+			  return { ...videoForm, videoContent : newContent };
 			}
-			return component; // order 값이 3이 아닌 경우, 기존 객체 그대로 반환
+			return videoForm; // order 값이 3이 아닌 경우, 기존 객체 그대로 반환
 		  });
 		  return updatedComponents;
 		});
 	  };
-	  const updateVideoUrlByOrder = (order, newUrl) => {
-		setComponents(prevComponents => {
+	  const updateVideoUrlByOrder = (ord, newUrl) => {
+		setVideoForms(prevComponents => {
 		  // 배열을 복제하여 수정
-		  const updatedComponents = prevComponents.map(component => {
+		  const updatedComponents = prevComponents.map(videoForm => {
 			// order 값이 3일 때 해당 객체의 title을 변경
-			if (component.order === order) {
-			  return { ...component, videoUrl : newUrl };
+			if (videoForm.ord === ord) {
+			  return { ...videoForm, videoUrl : newUrl };
 			}
-			return component; // order 값이 3이 아닌 경우, 기존 객체 그대로 반환
+			return videoForm; // order 값이 3이 아닌 경우, 기존 객체 그대로 반환
 		  });
 		  return updatedComponents;
 		});
@@ -243,18 +246,18 @@ function AdminWorkCreate(){
 							<button type="button" class="btn btn-primary" style={{color:"white"}} onClick={() => addComponent('8')}>유형08 등록</button>
 						</div>
 
-						{components.map((component, index) => {
-              				const OrderNumber = component.order;
+						{videoForms.map((videoForm, index) => {
+              				const OrderNumber = videoForm.ord;
 						return (
-							<div key={component.id}>
-								{component.type === '1' && <ImageUpload1 order={OrderNumber} index={index} removeFileFormState={removeFileFormState} saveFileState={saveFileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
-								{component.type === '2' && <ImageUpload2 order={OrderNumber} index={index} removeFileFormState={removeFileFormState} saveFileState={saveFileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
-								{component.type === '3' && <ImageUpload3 order={OrderNumber} index={index} removeFileFormState={removeFileFormState} saveFileState={saveFileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
-								{component.type === '4' && <ImageUpload4 order={OrderNumber} index={index} removeFileFormState={removeFileFormState} saveFileState={saveFileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
-								{component.type === '5' && <ImageUpload5 order={OrderNumber} index={index} removeFileFormState={removeFileFormState} saveFileState={saveFileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
-								{component.type === '6' && <ImageUpload6 order={OrderNumber} index={index} removeFileFormState={removeFileFormState} saveFileState={saveFileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
-								{component.type === '7' && <ImageUpload7 order={OrderNumber} index={index} removeFileFormState={removeFileFormState} saveFileState={saveFileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
-								{component.type === '8' && <ImageUpload8 order={OrderNumber} index={index} removeFileFormState={removeFileFormState} saveFileState={saveFileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} component={component}/>}
+							<div key={videoForm.id}>
+								{videoForm.videoType === '1' && <ImageUpload1 order={OrderNumber} index={index} removeFileFormState={removeFileFormState} saveFileState={saveFileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} videoForm={videoForm}/>}
+								{videoForm.videoType === '2' && <ImageUpload2 order={OrderNumber} index={index} removeFileFormState={removeFileFormState} saveFileState={saveFileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} videoForm={videoForm}/>}
+								{videoForm.videoType === '3' && <ImageUpload3 order={OrderNumber} index={index} removeFileFormState={removeFileFormState} saveFileState={saveFileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} videoForm={videoForm}/>}
+								{videoForm.videoType === '4' && <ImageUpload4 order={OrderNumber} index={index} removeFileFormState={removeFileFormState} saveFileState={saveFileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} videoForm={videoForm}/>}
+								{videoForm.videoType === '5' && <ImageUpload5 order={OrderNumber} index={index} removeFileFormState={removeFileFormState} saveFileState={saveFileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} videoForm={videoForm}/>}
+								{videoForm.videoType === '6' && <ImageUpload6 order={OrderNumber} index={index} removeFileFormState={removeFileFormState} saveFileState={saveFileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} videoForm={videoForm}/>}
+								{videoForm.videoType === '7' && <ImageUpload7 order={OrderNumber} index={index} removeFileFormState={removeFileFormState} saveFileState={saveFileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} videoForm={videoForm}/>}
+								{videoForm.videoType === '8' && <ImageUpload8 order={OrderNumber} index={index} removeFileFormState={removeFileFormState} saveFileState={saveFileState} updateVideoMethod={updateVideoMethod} removeComponent={removeComponent} videoForm={videoForm}/>}
 								
 								{/*
 								index !== 0 && (
@@ -262,7 +265,7 @@ function AdminWorkCreate(){
 								)
 								*/}
 								{/*
-								index !== components.length - 1 && (
+								index !== videoForms.length - 1 && (
 									<button type="button" onClick={() => changeComponentOrder(index, index + 1)}>아래로</button>
 								)
 								*/}
@@ -351,28 +354,27 @@ function AdminWorkCreate(){
 								<button type="button" onClick={()=>{
 									
 									console.log("work데이터 " + JSON.stringify(workForm,null,2));
-
+/*
 									let videoForms = [];
-									for(let i=0; i<components.length; i++){
+									for(let i=0; i<videoForms.length; i++){
 										let videoForm = {
-											videoId : components[i].videoId,
-											videoTitle : components[i].videoTitle,
-											videoContent : components[i].videoContent,
-											videoUrl : components[i].videoUrl,
-											videoOrd : components[i].videoOrd,
-											videoType : components[i].type
+											videoId : videoForms[i].videoId,
+											videoTitle : videoForms[i].videoTitle,
+											videoContent : videoForms[i].videoContent,
+											videoUrl : videoForms[i].videoUrl,
+											videoOrd : videoForms[i].videoOrd,
+											videoType : videoForms[i].type
 										}
 										videoForms.push(videoForm);
 									}
+									*/
 									console.log("videoForms 확인 ")
+							
 									for(let i=0; i<videoForms.length; i++){
 										console.log(i + " : " + JSON.stringify(videoForms[i],null,2));
 									}
-									/*
-									for(let i=0; i<components.length; i++){
-										console.log("컴포넌트 결과 :" + JSON.stringify(components[i],null,2));
-									}
-									*/
+									
+									
 									console.log("크레딧 결과 : " )
 									for(let i=0; i<creditsForms.length; i++){
 										console.log(i + " : " + JSON.stringify(creditsForms[i],null,2));
@@ -394,11 +396,11 @@ function AdminWorkCreate(){
 									/*
 									let formData = new FormData();
 									formData.append('workForm', work);
-									formData.append('videoForms', components);
+									formData.append('videoForms', videoForms);
 									formData.append('creditsForms', creditsForms);
 */
 									console.log('API 호출');
-									
+									/*
 									axios.post("http://localhost:3000/api/admin/work/save",{
 										workForm : workForm,
 										videoForms : videoForms,
@@ -412,7 +414,7 @@ function AdminWorkCreate(){
 									  console.log(result);
 
 									})
-
+*/
 								}}class="btn btn-success">등록</button>
 								<button type="button" class="btn btn-primary">취소</button>
 
