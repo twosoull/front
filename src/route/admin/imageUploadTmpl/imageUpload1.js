@@ -10,7 +10,13 @@ const ImageUpload1 = (props) => {
   let clickRemoveFileIdState = {
     clickRemoveFileId,setClickRemoveFileId
   } 
-
+	useEffect(() => {
+    if(!isEmpty(props.videoForm.files)){
+      for(let i=0; i<props.videoForm.files.length; i++){
+        setClickRemoveFileId([...clickRemoveFileId,props.videoForm.files[i].id]);
+      }
+    }
+  }, [])
   return (
     <section id="section01">
       <input type="text" value={props.order} />
@@ -24,7 +30,7 @@ const ImageUpload1 = (props) => {
           </div>
         </div>
       </div>
-      <button type="button" onClick={() => props.removeComponent(props.videoForm.id, clickRemoveFileId)}>삭제</button>
+      <button type="button" onClick={() => props.removeComponent(props.videoForm.id, clickRemoveFileId,props.videoForm.ord)}>삭제</button>
     </section>
     
   );

@@ -2,12 +2,20 @@ import React, { useState, useEffect } from 'react';
 import './imageUpload.css'; // 위의 CSS 코드를 styles.css 파일로 이동
 import ImageUploadBox from "./ImageUploadBox";
 import VideoForm from '../video/videoForm';
+import isEmpty from '../../utils/util';
 const ImageUpload6 = (props) => {
     let [clickRemoveFileId,setClickRemoveFileId] = useState([]);
     let clickRemoveFileIdState = {
       clickRemoveFileId,setClickRemoveFileId
     }
   
+    useEffect(() => {
+        if(!isEmpty(props.videoForm.files)){
+          for(let i=0; i<props.videoForm.files.length; i++){
+            setClickRemoveFileId([...clickRemoveFileId,props.videoForm.files[i].id]);
+          }
+        }
+      }, [])
   return (
     <section id="section06">
         <input type="text" value={props.order} />
@@ -33,7 +41,7 @@ const ImageUpload6 = (props) => {
                 </div>
             </div>
         </div>
-        <button type="button" onClick={() => props.removeComponent(props.videoForm.id, clickRemoveFileId)}>삭제</button>
+        <button type="button" onClick={() => props.removeComponent(props.videoForm.id, clickRemoveFileId,props.videoForm.ord)}>삭제</button>
     </section>
   );
 };

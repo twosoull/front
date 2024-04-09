@@ -14,10 +14,11 @@ import axios from 'axios';
 import Thumnail from "./thumnail/thumnail";
 import { useLocation, useParams } from "react-router-dom";
 import isEmpty from "../../utils/util";
-function AdminWorkCreate(){
+function AdminWorkCreate(props){
 	//work 데이터
 	const [workForm,setWorkForm] = useState({id:0, workTitle:'', useYn:'Y'});
 	//video 데이터
+	const [removeVideoForms,setRemoveVideoForms] = useState([]);
 	const [videoForms, setVideoForms] = useState([]);
 	let videoFormsState = {
 		videoForms, setVideoForms
@@ -33,12 +34,15 @@ function AdminWorkCreate(){
 		removeFileForms,setRemoveFileForms
 	}
 	//imageUpload(video포함) 유형의 순서조정 값
-	const [componentOrder, setComponentOrder] = useState([]);
+	//const [componentOrder, setComponentOrder] = useState(0);
 	const [thumbnailFileForm, setThumbnailFileForm] = useState();
 	let thumbnailFileFormState = {
 		thumbnailFileForm, setThumbnailFileForm
 	}
 
+	const [creditsForms, setCreditsForms] = useState([{ job: '', name: '', id: 0 }]);
+	//삭제 된 파일의 크레딧 id리스트
+	const [removeCreditsForms,setRemoveCreditsForms] = useState([]);
 	const findParams = useParams();
     let workId = findParams.id;
 	console.log("workId =" + workId);
@@ -54,8 +58,10 @@ function AdminWorkCreate(){
 		
 				let status = result.data.status;
 				let data = result.data.data;
-				setWorkForm({id:result.data.data.id , workTitle:result.data.data.workTitle, useYn:result.data.data.useYn});
+				setWorkForm({workId:result.data.data.id , workTitle:result.data.data.workTitle, useYn:result.data.data.useYn});
 				setVideoForms(result.data.data.videos);
+				//setComponentOrder(result.data.data.videos.length);
+				setCreditsForms(result.data.data.credits);
 			})
 		}
 	}, [])
@@ -63,25 +69,26 @@ function AdminWorkCreate(){
 	console.log(JSON.stringify(workForm,null,2));
 	console.log(JSON.stringify(videoForms,null,2));
 	const addComponent = (componentType) => {
-	  const newComponent = { videoType: componentType, id: videoForms.length, ord: componentOrder.length + 1, videoId: 0, videoTitle:'', videoContent:'', videoUrl:'', videoOrd: componentOrder.length + 1 , files:[]};
+	  const newComponent = { videoType: componentType, id: videoForms.length, ord: videoForms.length+1, videoTitle:'', videoContent:'', videoUrl:'', videoOrd: videoForms.length+1 , files:[]};
 	  setVideoForms([...videoForms, newComponent]);
-	  setComponentOrder([...componentOrder, componentType]);
+	  //setComponentOrder( componentOrder+1);
 	};
   
-	const removeComponent = (id , clickRemoveFileId) => {
+	const removeComponent = (id , clickRemoveFileId,ord) => {
 
 
 		//setSaveFileForms(prevSaveFileForm => prevSaveFileForm.filter(fileId => !clickRemoveFileId.includes(fileId)));
 		//setSaveFileForms(prevSaveFileForm => prevSaveFileForm.filter(file => !clickRemoveFileId.includes(file.id)));
 		const filteredSaveFileForm = saveFileForms.filter(saveFileForms => saveFileForms.id !== id);
 		const filteredComponents = videoForms.filter(videoForm => videoForm.id !== id);
-		const filteredOrder = componentOrder.filter((_, index) => index !== id);
-	
-		console.log(id);
+
+		console.log("삭제")
+		console.log("id" + id);
+		console.log("ord" + ord);
 		// 삭제된 컴포넌트 이후의 컴포넌트들의 order 값을 재조정
 		const updatedComponents = filteredComponents.map(videoForm => {
-		  if (videoForm.ord > id) {
-			return { ...videoForm, ord: videoForm.order - 1 , videoOrd: videoForm.videoOrd - 1};
+		  if (videoForm.ord > ord) {
+			return { ...videoForm, ord: videoForm.ord - 1 , videoOrd: videoForm.videoOrd - 1};
 		  }
 		  return videoForm;
 		});
@@ -100,7 +107,8 @@ function AdminWorkCreate(){
 			return file;
 		}));
 		setVideoForms(updatedComponents);
-		setComponentOrder(filteredOrder);
+		//setComponentOrder(componentOrder-1);
+		setRemoveVideoForms([...removeVideoForms,id]);
 		const updatedRemoveFileFormsSet = new Set([...removeFileForms, ...clickRemoveFileId]);
 		removeFileFormState.setRemoveFileForms(Array.from(updatedRemoveFileFormsSet));
 	  };
@@ -184,21 +192,19 @@ function AdminWorkCreate(){
 	  }
 
 	  //크레딧
-
-	  const [creditsForms, setCreditsForms] = useState([{ creditsJob: '', creditsName: '', creditsId: 0 }]);
-
 	  const handleAddCredit = () => {
-		const newCreditsForms = [...creditsForms, { creditsJob: '', creditsName: '', creditsId: 0 }];
+		const newCreditsForms = [...creditsForms, { job: '', name: '', id: 0 }];
 		setCreditsForms(newCreditsForms);
 	  };
 	
-	  const handleRemoveCredit = (index) => {
+	  const handleRemoveCredit = (index,id) => {
 		if (index === 0) {
 		  return; // 첫 번째 요소는 삭제할 수 없도록 처리
 		}
 		const newCreditsForms = [...creditsForms];
 		newCreditsForms.splice(index, 1);
 		setCreditsForms(newCreditsForms);
+		setRemoveCreditsForms([...removeCreditsForms,id]);
 	  };
 
 	  //워크
@@ -226,7 +232,7 @@ function AdminWorkCreate(){
 						<div class="form-group row ">
 						<label class="control-label col-md-3 col-sm-3 ">대제목</label>
 							<div class="col-md-9 col-sm-9 ">
-								<textarea type="text" class="form-control" onChange={(e)=>{
+								<textarea type="text" class="form-control" value={workForm.workTitle} onChange={(e)=>{
 									updateWork(e.target.value);
 								}} placeholder="대제목을 입력해 주세요." >								
 								</textarea>
@@ -281,13 +287,13 @@ function AdminWorkCreate(){
 									<div className="creditArea" key={index} data-ord={index + 1} style={{ display: "flex" }}>
 									<input
 									type="text"
-									name="creditsJob"
+									name="job"
 									className="form-control"
-									value={credit.creditsJob}
+									value={credit.job}
 									placeholder=" "
 									onChange={(e) => {
 										const newCreditsForms = [...creditsForms];
-										newCreditsForms[index].creditsJob = e.target.value;
+										newCreditsForms[index].job = e.target.value;
 										setCreditsForms(newCreditsForms);
 									}}
 									/>
@@ -295,11 +301,11 @@ function AdminWorkCreate(){
 									type="text"
 									name="name"
 									className="form-control"
-									value={credit.creditsName}
+									value={credit.name}
 									placeholder=" "
 									onChange={(e) => {
 										const newCreditsForms = [...creditsForms];
-										newCreditsForms[index].creditsName = e.target.value;
+										newCreditsForms[index].name = e.target.value;
 										setCreditsForms(newCreditsForms);
 									}}
 									/>
@@ -307,7 +313,7 @@ function AdminWorkCreate(){
 									<button
 										type="button"
 										className="btn btn-secondary input-minus"
-										onClick={() => handleRemoveCredit(index)}
+										onClick={() => handleRemoveCredit(index,credit.id)}
 										data-no={credit.creditsNo}
 									>
 										<i className="fa fa-minus"></i>
@@ -386,12 +392,21 @@ function AdminWorkCreate(){
 									for(let i=0; i<saveFileForms.length; i++){
 										console.log(i + ": " + JSON.stringify(saveFileForms[i],null,2));
 									}
-
 									
+									console.log("removeVideo 확인")
+									for(let i=0; i < removeVideoForms.length; i++){
+										console.log(i + ": " + JSON.stringify(removeVideoForms[i],null,2));
+									}
 									console.log("removefile 확인");
 									for(let i=0; i < removeFileForms.length; i++){
 										console.log(i + ": " + JSON.stringify(removeFileForms[i],null,2));
 									}
+
+									console.log("removeCreadits 확인");
+									for(let i=0; i<removeCreditsForms.length; i++){
+										console.log(i + ": " + JSON.stringify(removeCreditsForms[i],null,2));
+									}
+
 
 									/*
 									let formData = new FormData();
@@ -400,21 +415,23 @@ function AdminWorkCreate(){
 									formData.append('creditsForms', creditsForms);
 */
 									console.log('API 호출');
-									/*
-									axios.post("http://localhost:3000/api/admin/work/save",{
+									console.log(props.uri);
+									axios.post(props.uri,{
 										workForm : workForm,
 										videoForms : videoForms,
 										creditsForms : creditsForms,
 										saveFileForms : saveFileForms,
 										thumbnailFileForm : thumbnailFileForm,
-										removeFileForms : removeFileForms
+										removeFileForms : removeFileForms,
+										removeVideoForms : removeVideoForms,
+										removeCreditsForms : removeCreditsForms
 									}
 									)
 									.then(result => {
 									  console.log(result);
 
 									})
-*/
+
 								}}class="btn btn-success">등록</button>
 								<button type="button" class="btn btn-primary">취소</button>
 

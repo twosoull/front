@@ -44,7 +44,8 @@ function AdminWork(){
     useEffect(() => {
         callApiGetContentList(pagingProps,0);
     }, [])
-
+    let updateApiUri="http://localhost:3000/api/admin/work/update";
+    let createApiUri="http://localhost:3000/api/admin/work/save"
     return (
         <div class="right_col" role="main" style={{ minHeight: "476.25px" }}>
             <div>
@@ -55,8 +56,8 @@ function AdminWork(){
             </div>
             <Routes>
                 <Route path="/init" element={<AdminWorkList pagingProps={pagingProps}/>} /> 
-                <Route path="/view/:id" element={<AdminWorkCreate pagingProps={pagingProps}/>}/> 
-                <Route path="/create" element={<AdminWorkCreate pagingProps={pagingProps}/>}/> 
+                <Route path="/view/:id" element={<AdminWorkCreate uri={updateApiUri} pagingProps={pagingProps}/>}/> 
+                <Route path="/create" element={<AdminWorkCreate uri={createApiUri} pagingProps={pagingProps}/>}/> 
             </Routes>
                             
             </div>
