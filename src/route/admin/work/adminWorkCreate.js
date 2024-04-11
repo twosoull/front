@@ -62,6 +62,7 @@ function AdminWorkCreate(props){
 				setVideoForms(result.data.data.videos);
 				//setComponentOrder(result.data.data.videos.length);
 				setCreditsForms(result.data.data.credits);
+				setThumbnailFileForm(result.data.data.filesList[0]);
 			})
 		}
 	}, [])

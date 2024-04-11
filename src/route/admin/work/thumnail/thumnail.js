@@ -1,12 +1,24 @@
 import axios from 'axios';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import isEmpty from '../../../utils/util';
 
 function Thumnail(props){
     const [highlighted, setHighlighted] = useState(false);
     const [images, setImages] = useState([]);
+    useEffect(() => {
+      console.log("썸네일 확인: " + props.thumbnailFileFormState.thumbnailFileForm);
+      
+      if(!isEmpty(props.thumbnailFileFormState.thumbnailFileForm)){
+        setImages([props.thumbnailFileFormState.thumbnailFileForm]);
+        console.log("박스확인");
+        console.log(props.thumbnailFileFormState.thumbnailFileForm);
+      }
+    }, [props.thumbnailFileFormState.thumbnailFileForm])
     const fileInputRef = useRef(null);
-
+    console.log("썸네일 확인2: " + props.thumbnailFileFormState.thumbnailFileForm);
+    console.log("삭제 확인 :"+ JSON.stringify(images[0],null,2))
     const preventDefaults = (e) => {
+
       e.preventDefault();
       e.stopPropagation();
     };
@@ -44,7 +56,7 @@ function Thumnail(props){
         reader.onload = (event) => {
           newImages.push({
             id: id,
-            src: event.target.result,
+            filePath: event.target.result,
             file: file, // 파일 정보 저장
             filsId : id
           });
@@ -62,7 +74,7 @@ function Thumnail(props){
       const updatedImages = images.filter(img => img.id !== id);
       setImages(updatedImages);
       console.log("삭제파일 : " + id);
-      props.thumbnailFileFormState.setThumbnailFileForm({id:0,cd:'thumb_nail'});
+      props.thumbnailFileFormState.setThumbnailFileForm();
       props.removeFileFormState.setRemoveFileForms([...props.removeFileFormState.removeFileForms, id]);
     };
     
@@ -120,11 +132,12 @@ function Thumnail(props){
 										
         {images.length > 0 ? (
                 images.map(image => (
-                <div key={image.id} className="image-container">
-                    <img src={image.src} alt="Uploaded" />
-                    <button className="delete-button" onClick={() => deleteImage(image.id ,image.fileId )}>
+                  <div key={image.id} id={image.id} className="image-container">
+                  {/* 이미지를 렌더링하고 생성한 경로를 사용 */}
+                  <img src={image.filePath} alt="Uploaded" />
+                  <button className="delete-button" onClick={() => deleteImage(image.id ,image.fileId )}>
                     X
-                    </button>
+                  </button>
                 </div>
                 ))
             ) : (
