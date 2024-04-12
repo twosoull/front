@@ -9,12 +9,13 @@ const ImageUploadBox = (props) => {
   const [images, setImages] = useState([]);
 
   useEffect(() => {
+    console.log("??");
     if(!isEmpty(props.file)){
       setImages([props.file]);
       console.log("박스확인");
       console.log(props.file);
     }
-	}, [])
+	}, [props.file])
 
   const fileInputRef = useRef(null);
   

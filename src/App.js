@@ -3,6 +3,8 @@ import './App.css';
 import axios from 'axios';
 import Admin from './route/admin/admin.js'
 import { Routes, Route, Link } from 'react-router-dom'
+import Front from './route/front/front.js';
+import { Helmet } from 'react-helmet';
 function App() {
 /*
   axios.get("/api/main").then((result)=>{
@@ -11,13 +13,10 @@ function App() {
 */
   return (
     <div className="App">
-      <div class="nav-md">
-        <div class="container body">
             <Routes>
               <Route path="/admin/*" element={<Admin />} />
+              <Route path="/*" element={<Front />} />
             </Routes>
-        </div>
-      </div>
     </div>
   );
 }

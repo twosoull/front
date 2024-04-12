@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="30" viewBox="0 0 30 30">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="사각형_153553" data-name="사각형 153553" width="30" height="30" transform="translate(2387 -8527)" fill="#fff" stroke="#707070" stroke-width="1"/>
+    </clipPath>
+  </defs>
+  <g id="BTN_Menu_X" transform="translate(-2387 8527)" clip-path="url(#clip-path)">
+    <g id="그룹_132009" data-name="그룹 132009" transform="translate(2394.721 -8503.332) rotate(-135)">
+      <rect id="사각형_153551" data-name="사각형 153551" width="1.838" height="22.424" transform="translate(0 0)" fill="#777"/>
+    </g>
+    <g id="그룹_132010" data-name="그룹 132010" transform="translate(2393.422 -8519.188) rotate(-45)">
+      <rect id="사각형_153552" data-name="사각형 153552" width="1.838" height="22.425" transform="translate(0 0)" fill="#777"/>
+    </g>
+  </g>
+</svg>

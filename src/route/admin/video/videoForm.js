@@ -1,7 +1,4 @@
 function VideoForm(props){
-
-  console.log("video 2차확인 ");
-  console.log(JSON.stringify(props.videoForm,null,2));
     return (
         <div id="videoBox01">
             <div class="form-group row ">

@@ -6,17 +6,12 @@ function Thumnail(props){
     const [highlighted, setHighlighted] = useState(false);
     const [images, setImages] = useState([]);
     useEffect(() => {
-      console.log("썸네일 확인: " + props.thumbnailFileFormState.thumbnailFileForm);
       
       if(!isEmpty(props.thumbnailFileFormState.thumbnailFileForm)){
         setImages([props.thumbnailFileFormState.thumbnailFileForm]);
-        console.log("박스확인");
-        console.log(props.thumbnailFileFormState.thumbnailFileForm);
       }
     }, [props.thumbnailFileFormState.thumbnailFileForm])
     const fileInputRef = useRef(null);
-    console.log("썸네일 확인2: " + props.thumbnailFileFormState.thumbnailFileForm);
-    console.log("삭제 확인 :"+ JSON.stringify(images[0],null,2))
     const preventDefaults = (e) => {
 
       e.preventDefault();
@@ -117,7 +112,6 @@ function Thumnail(props){
           let id = result.data.data;
           //setImages([...images, { id: Date.now(), fileId: result.data.data }]); // 이미지 추가
           //props.clickRemoveFileIdState.setClickRemoveFileId([...props.clickRemoveFileIdState.clickRemoveFileId, result.data.data]);
-          console.log("반환데이터 : " + id);
           resolve(id);
           return id;
         })

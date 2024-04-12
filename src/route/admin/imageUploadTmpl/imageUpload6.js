@@ -27,15 +27,15 @@ const ImageUpload6 = (props) => {
             <div class="form-group row ">
                 <label class="control-label col-md-3 col-sm-3 ">이미지</label>
                 <div className="image_tmpl6 image_flex_width600">
-                        <ImageUploadBox picOrd={1} saveFileState={props.saveFileState} videoForm={props.videoForm} clickRemoveFileIdState={clickRemoveFileIdState}/>
+                        <ImageUploadBox file={props.videoForm.files[0]} picOrd={1} saveFileState={props.saveFileState} videoForm={props.videoForm} clickRemoveFileIdState={clickRemoveFileIdState}/>
                         <div className="image_tmpl6-1">
                             <div className="image_flex">
-                                <ImageUploadBox picOrd={2} removeFileFormState={props.removeFileFormState} saveFileState={props.saveFileState} videoForm={props.videoForm} clickRemoveFileIdState={clickRemoveFileIdState}/>
-                                <ImageUploadBox picOrd={3} removeFileFormState={props.removeFileFormState} saveFileState={props.saveFileState} videoForm={props.videoForm} clickRemoveFileIdState={clickRemoveFileIdState}/>
+                                <ImageUploadBox file={props.videoForm.files[1]} picOrd={2} removeFileFormState={props.removeFileFormState} saveFileState={props.saveFileState} videoForm={props.videoForm} clickRemoveFileIdState={clickRemoveFileIdState}/>
+                                <ImageUploadBox file={props.videoForm.files[2]} picOrd={3} removeFileFormState={props.removeFileFormState} saveFileState={props.saveFileState} videoForm={props.videoForm} clickRemoveFileIdState={clickRemoveFileIdState}/>
                             </div>
                             <div className="image_flex">
-                                <ImageUploadBox picOrd={4} removeFileFormState={props.removeFileFormState} saveFileState={props.saveFileState} videoForm={props.videoForm} clickRemoveFileIdState={clickRemoveFileIdState}/>
-                                <ImageUploadBox picOrd={5} removeFileFormState={props.removeFileFormState} saveFileState={props.saveFileState} videoForm={props.videoForm} clickRemoveFileIdState={clickRemoveFileIdState}/>
+                                <ImageUploadBox file={props.videoForm.files[3]} picOrd={4} removeFileFormState={props.removeFileFormState} saveFileState={props.saveFileState} videoForm={props.videoForm} clickRemoveFileIdState={clickRemoveFileIdState}/>
+                                <ImageUploadBox file={props.videoForm.files[4]} picOrd={5} removeFileFormState={props.removeFileFormState} saveFileState={props.saveFileState} videoForm={props.videoForm} clickRemoveFileIdState={clickRemoveFileIdState}/>
                             </div>
                         </div>
                 </div>
