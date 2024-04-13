@@ -8,9 +8,6 @@ import {Navbar,Container,Nav,Button,Row,Col} from 'react-bootstrap';
 import AdminWorkView from "./adminWorkView.js";
 import AdminWorkCreate from "./adminWorkCreate.js";
 function AdminWork(){
-    axios.post("/api/admin/login?userPw=As415263!!&userId=twosoull").then((result) => {
-
-    })
 
     let navigate = useNavigate();
     /*contentList*/
@@ -45,7 +42,8 @@ function AdminWork(){
         callApiGetContentList(pagingProps,0);
     }, [])
     let updateApiUri="http://localhost:3000/api/admin/work/update";
-    let createApiUri="http://localhost:3000/api/admin/work/save"
+    let createApiUri="http://localhost:3000/api/admin/work/save";
+    
     return (
         <div class="right_col" role="main" style={{ minHeight: "476.25px" }}>
             <div>

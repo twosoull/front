@@ -10,6 +10,10 @@ function AdminHead(){
             <link href="/resources/vendors/nprogress/nprogress.css" rel="stylesheet" />
             <link href="/resources/vendors/iCheck/skins/flat/green.css" rel="stylesheet" />
             <link href="/resources/build/css/custom.min.css" rel="stylesheet" />
+
+
+            <link href="/resources/vendors/animate.css/animate.min.css" rel="stylesheet" />
+
             <script src="/resources/vendors/jquery/dist/jquery.min.js"></script>
             <script src="/resources/vendors/fastclick/lib/fastclick.js"></script>
             <script src="/resources/vendors/nprogress/nprogress.js"></script>

@@ -3,7 +3,7 @@ function Sidebar(){
     <div class="col-md-3 left_col">
 	    <div class="left_col scroll-view">
 		    <div class="navbar nav_title" style={{border: "0"}}>
-			    <a href="/admin/work/init.do" class="site_title">
+			    <a href="/admin/work/init" class="site_title">
 				<span>LoopMotionStudio</span></a>
 		    </div>
 
@@ -19,8 +19,8 @@ function Sidebar(){
                 <div class="menu_section">
                     <h3>General</h3>
                     <ul class="nav side-menu">
-                        <li><a href="/admin/work/init.do"><i class="fa fa-home"></i>Work</a></li>
-                        <li><a href="/admin/contact/init.do"><i class="fa fa-edit"></i>Contact</a></li>
+                        <li><a href="/admin/work/init"><i class="fa fa-home"></i>Work</a></li>
+                        <li><a href="/admin/contact/init"><i class="fa fa-edit"></i>Contact</a></li>
 
                     </ul>
                 </div>

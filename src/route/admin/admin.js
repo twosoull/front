@@ -62,7 +62,7 @@ function Admin(){
 					<Route path="/work/*" element={<AdminWork/>} />
 					<Route path="/contact/*" element={<AdminContact/>} />
 				</Routes>
-				<Footer></Footer>
+				<Footer />
     		</div>
 		</div>
 	</div>

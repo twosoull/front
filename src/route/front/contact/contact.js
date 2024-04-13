@@ -1,8 +1,10 @@
+import axios from "axios";
 import { useState } from "react";
 
 function Contact(){
 
     let [contact,setContact] = useState();
+    let [files,setFiles] = useState();
 
     const updateContactClientCompany = (value) => {setContact(prevContact => ({...prevContact,
 			contactClientCompany: value}));};
@@ -15,13 +17,20 @@ function Contact(){
     const updateContactProjectTitle = (value) => {setContact(prevContact => ({...prevContact,
             contactProjectTitle: value}));};
     const updateContactProjectSchedule = (value) => {setContact(prevContact => ({...prevContact,
-            contactProjectTitle: value}));};
+            contactProjectSchedule: value}));};
     const updateContactContent = (value) => {setContact(prevContact => ({...prevContact,
             contactContent: value}));};
 
     const updateContactVideoLength = (value) => {setContact(prevContact => ({...prevContact,
             contactVideoLength: value}));};
+    const updatecontactBudget = (value) => {setContact(prevContact => ({...prevContact,
+            contactBudget : value}));};
 
+    const handleFileChange = (file) => {
+         // 파일이 여러 개일 경우를 대비하여 배열 형태로 저장합니다.
+         setFiles(file);
+    };
+              
     return(
         <div class="content">
             <div class="txt_area">
@@ -75,10 +84,22 @@ function Contact(){
                                                         onClick={(e)=>{
                                                             updateContactVideoLength("30초 이내");
                                                         }}>30초 이내</button></li>
-                                                        <li><button type="button" class="length" data-value="30초 ~ 1분이내">30초 ~ 1분이내</button></li>
-                                                        <li><button type="button" class="length" data-value="1분 ~ 2분">1분 ~ 2분</button></li>
-                                                        <li><button type="button" class="length" data-value="2분 ~ 3분">2분 ~ 3분</button></li>
-                                                        <li><button type="button" class="length" data-value="3분 이상">3분 이상</button></li>
+                                                        <li><button type="button" class="length" data-value="30초 ~ 1분이내"
+                                                        onClick={(e)=>{
+                                                            updateContactVideoLength("30초 ~ 1분이내");
+                                                        }}>30초 ~ 1분이내</button></li>
+                                                        <li><button type="button" class="length" data-value="1분 ~ 2분"
+                                                        onClick={(e)=>{
+                                                            updateContactVideoLength("1분 ~ 2분");
+                                                        }}>1분 ~ 2분</button></li>
+                                                        <li><button type="button" class="length" data-value="2분 ~ 3분"
+                                                        onClick={(e)=>{
+                                                            updateContactVideoLength("2분 ~ 3분");
+                                                        }}>2분 ~ 3분</button></li>
+                                                        <li><button type="button" class="length" data-value="3분 이상"
+                                                        onClick={(e)=>{
+                                                            updateContactVideoLength("3분 이상");
+                                                        }}>3분 이상</button></li>
                                                     </ul>
                                                 </div>
                                             </li>
@@ -86,12 +107,30 @@ function Contact(){
                                                 <div class="form_select">
                                                     <button type="button" >제작 예산을 선택해주세요.</button>
                                                     <ul>
-                                                        <li><button type="button" class="budget" data-value="500만 원 이내">500만 원 이내</button></li>
-                                                        <li><button type="button" class="budget" data-value="1000 ~ 1500 만 원">1000 ~ 1500 만 원</button></li>
-                                                        <li><button type="button" class="budget" data-value="1500 ~ 2000 만 원">1500 ~ 2000 만 원</button></li>
-                                                        <li><button type="button" class="budget" data-value="3000 ~ 4000 만 원">3000 ~ 4000 만 원</button></li>
-                                                        <li><button type="button" class="budget" data-value="5000 만 원 이상">5000 만 원 이상</button></li>
-                                                        <li><button type="button" class="budget" data-value="기타협의 필요">기타협의 필요</button></li>
+                                                        <li><button type="button" class="budget" data-value="500만 원 이내"
+                                                        onClick={(e)=>{
+                                                            updatecontactBudget("500만 원 이내");
+                                                        }}>500만 원 이내</button></li>
+                                                        <li><button type="button" class="budget" data-value="1000 ~ 1500 만 원"
+                                                        onClick={(e)=>{
+                                                            updatecontactBudget("1000 ~ 1500 만 원");
+                                                        }}>1000 ~ 1500 만 원</button></li>
+                                                        <li><button type="button" class="budget" data-value="1500 ~ 2000 만 원"
+                                                        onClick={(e)=>{
+                                                            updatecontactBudget("1500 ~ 2000 만 원");
+                                                        }}>1500 ~ 2000 만 원</button></li>
+                                                        <li><button type="button" class="budget" data-value="3000 ~ 4000 만 원"
+                                                        onClick={(e)=>{
+                                                            updatecontactBudget("3000 ~ 4000 만 원");
+                                                        }}>3000 ~ 4000 만 원</button></li>
+                                                        <li><button type="button" class="budget" data-value="5000 만 원 이상"
+                                                        onClick={(e)=>{
+                                                            updatecontactBudget("5000 만 원 이상");
+                                                        }}>5000 만 원 이상</button></li>
+                                                        <li><button type="button" class="budget" data-value="기타협의 필요"
+                                                        onClick={(e)=>{
+                                                            updatecontactBudget("기타협의 필요");
+                                                        }}>기타협의 필요</button></li>
                                                     </ul>
                                                 </div>
                                             </li>
@@ -99,17 +138,34 @@ function Contact(){
                                                 updateContactContent(e.target.value);
                                             }}></textarea></div></li>
                                             <li class="w100p pt0">
-                                                <div class="form_attach">
-                                                    <div id="form_attach_btn" class="form_attach_btn">
-                                                        <input type="file" name="contact_file" id="attach" />
-                                                        <label for="attach">파일첨부</label>
-                                                    </div>
-                                                    <div class="form_attach_con" id="file_box">
-                                                        <span id="file_info" style={{color:"grey"}}>  * 파일이 여러개일 경우 압축파일로 첨부해주세요.</span>
 
-                                                        <div id="attachment" class="attachment"></div>
-                                                    </div>
-                                                </div>
+                                                    {files && files.length > 0 ? (
+                                                        <div class="form_attach">
+                                                                <div class="form_attach_con" id="file_box">
+
+                                                                <div id="attachment" class="attachment">
+                                                                    <a href="javascript:;">{files[0].name}</a>
+                                                                    <button type="button" id="remove_file" class="btn_del"
+                                                                    onClick={()=>{
+                                                                        setFiles('');
+                                                                    }}><span class="blind">삭제</span></button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    ) : (
+                                                        <div class="form_attach">
+                                                                <div id="form_attach_btn" class="form_attach_btn">
+                                                            
+                                                                <input type="file" name="contact_file" id="attach" onChange={(e) => handleFileChange(e.target.files)} />
+                                                                    <label for="attach">파일첨부</label>
+                                                                </div>
+                                                                <div class="form_attach_con" id="file_box">
+                                                                    <span id="file_info" style={{color:"grey"}}>  * 파일이 여러개일 경우 압축파일로 첨부해주세요.</span>
+
+                                                                    <div id="attachment" class="attachment"></div>
+                                                                </div>
+                                                        </div>
+                                                    )}
                                             </li>
                                         </ul>
                                     </li>
@@ -124,6 +180,37 @@ function Contact(){
                             <div class="btn_box">
                                 <input id="sub" type="button" onClick={()=>{
 										console.log(" 확인 : " + JSON.stringify(contact,null,2));
+
+                                        console.log('API 호출');
+                                        // FormData 객체 생성
+                                        const formData = new FormData();
+
+                                        // 파일을 FormData에 추가
+                                        if (files && files.length > 0) {
+                                            for (let i = 0; i < files.length; i++) {
+                                            formData.append('files', files[i]);
+                                            console.log(files[i]);
+                                            }
+                                        }
+
+                                        // contact 객체를 JSON 문자열로 변환하여 FormData에 추가
+                                        const json = JSON.stringify(contact);//데이터는 json타입으로 처리하고 blob에 넣어준다.
+                                        const blob = new Blob([json], { type: 'application/json' });
+                                        formData.append('contactForm', blob);
+
+                                        // API 호출
+                                        
+                                        axios.post("/api/contact/save", formData, {
+                                            headers: {
+                                            'Content-Type': 'multipart/form-data'
+                                            }
+                                        }).then(result => {
+                                            console.log(result);
+                                        }).catch(function (error) {
+                                            alert(error.response.data.errors[0].message);
+
+                                        })
+                                        
                                 }}value="문의하기" class="btn_submit" />
                             </div>
                         </div>

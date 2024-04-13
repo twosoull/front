@@ -8,9 +8,6 @@ import ContactList from './adminContactList.js';
 import AdminContactView from './adminContactView.js';
 function AdminContact() {
 
-    axios.post("/api/admin/login?userPw=As415263!!&userId=twosoull").then((result) => {
-
-    })
 
     let navigate = useNavigate();
     /*contentList*/
