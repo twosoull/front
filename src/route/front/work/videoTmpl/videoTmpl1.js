@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import ImageTmpl from "./ImageTmpl";
 import isEmpty from "../../../utils/util";
 
@@ -18,9 +18,17 @@ function VideoTmpl1(props){
       }, [setImage])
 
     return(
-        <li class="w100p ${file101}">
-            <ImageTmpl image={props.video.files[0]} />
-        </li>
+        <Fragment>
+        {!isEmpty(props.video.files[0]) ? (        
+            <li class="w100p ${file101}">
+                <ImageTmpl image={props.video.files[0]} />
+            </li>
+            ):(
+                <div></div>
+                ) 
+            }
+        </Fragment>
+
     )
 }
 

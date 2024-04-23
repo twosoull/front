@@ -1,15 +1,19 @@
+import { Fragment } from "react";
 import isEmpty from "../../../utils/util";
 function ImageTmpl(props){
 
     return(
-        <div class="img_box">
+        <Fragment>
+            
         {!isEmpty(props.image) ? (        
+        <div class="img_box">
             <img src={props.image.filePath} />
-            ):(
-            <img  />
-            ) 
-        }
         </div>
+            ):(
+                <div></div>
+                ) 
+            }
+        </Fragment>
 
     )
 }

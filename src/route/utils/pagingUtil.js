@@ -9,7 +9,8 @@ function callApiGetContentList(pagingProps,i){
     let pageNum = i > 0 ? i-1 : i;
     const params = {page : pageNum}
     axios.get(pagingProps.url,{params}).then((result) => {
-        if (isEmpty(result.data.code)) {
+        console.log(result);
+        if (result.data.status == 'OK') {
             let copy = [...pagingProps.resultList];
             copy = result.data.data.content;
             pagingProps.setResultList(copy);
@@ -25,7 +26,6 @@ function callApiGetContentList(pagingProps,i){
             alert(result.data.message);
             window.location.href = "/admin/login";
         }
-
     })
 }
 

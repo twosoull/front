@@ -13,6 +13,7 @@ function VideoTmpl2(props){
         }
       }, [setImage])
     return(
+
         <Fragment>
                 {/* 유형 2 WEB_6개, MOBILE_6개*/}
                 <li class="w50p ${file102}"><ImageTmpl image={props.video.files[0]} /></li>
