@@ -20,7 +20,7 @@ function VideoTmpl1(props){
     return(
         <Fragment>
         {!isEmpty(props.video.files[0]) ? (        
-            <li class="w100p ${file101}">
+            <li className="w100p ${file101}">
                 <ImageTmpl image={props.video.files[0]} />
             </li>
             ):(

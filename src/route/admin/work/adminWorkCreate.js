@@ -45,7 +45,6 @@ function AdminWorkCreate(props){
 	const [removeCreditsForms,setRemoveCreditsForms] = useState([]);
 	const findParams = useParams();
     let workId = findParams.id;
-	console.log("workId =" + workId);
 	useEffect(() => {
 		if(!isEmpty(workId)){
 			let url = "/api/admin/work/findId";
@@ -54,8 +53,6 @@ function AdminWorkCreate(props){
 			//let [contactBudget ,setContactBudget] = useState("");
 		
 			axios.get(url,{params}).then((result) => {
-				console.log(result.data);
-		
 				let status = result.data.status;
 				let data = result.data.data;
 				setWorkForm({workId:result.data.data.id , workTitle:result.data.data.workTitle, useYn:result.data.data.useYn});
@@ -66,9 +63,6 @@ function AdminWorkCreate(props){
 			})
 		}
 	}, [])
-	console.log("담은 데이터 확인");
-	console.log(JSON.stringify(workForm,null,2));
-	console.log(JSON.stringify(videoForms,null,2));
 	const addComponent = (componentType) => {
 	  const newComponent = { videoType: componentType, id: videoForms.length, ord: videoForms.length+1, videoTitle:'', videoContent:'', videoUrl:'', videoOrd: videoForms.length+1 , files:[]};
 	  setVideoForms([...videoForms, newComponent]);
@@ -83,9 +77,6 @@ function AdminWorkCreate(props){
 		const filteredSaveFileForm = saveFileForms.filter(saveFileForms => saveFileForms.id !== id);
 		const filteredComponents = videoForms.filter(videoForm => videoForm.id !== id);
 
-		console.log("삭제")
-		console.log("id" + id);
-		console.log("ord" + ord);
 		// 삭제된 컴포넌트 이후의 컴포넌트들의 order 값을 재조정
 		const updatedComponents = filteredComponents.map(videoForm => {
 		  if (videoForm.ord > ord) {
@@ -225,32 +216,32 @@ function AdminWorkCreate(props){
 
     return(
 
-		<div class="col-md-12 col-sm-12 ">
-			<div class="x_panel">
-				<div class="x_content">
+		<div className="col-md-12 col-sm-12 ">
+			<div className="x_panel">
+				<div className="x_content">
 					<br />
-					<form id="form"  method="post" enctype="multipart/form-data" class="form-horizontal form-label-left">
-						<div class="form-group row ">
-						<label class="control-label col-md-3 col-sm-3 ">대제목</label>
-							<div class="col-md-9 col-sm-9 ">
-								<textarea type="text" class="form-control" value={workForm.workTitle} onChange={(e)=>{
+					<form id="form"  method="post" enctype="multipart/form-data" className="form-horizontal form-label-left">
+						<div className="form-group row ">
+						<label className="control-label col-md-3 col-sm-3 ">대제목</label>
+							<div className="col-md-9 col-sm-9 ">
+								<textarea type="text" className="form-control" value={workForm.workTitle} onChange={(e)=>{
 									updateWork(e.target.value);
 								}} placeholder="대제목을 입력해 주세요." >								
 								</textarea>
 							</div>
-							<label class="control-label col-md-3 col-sm-3 ">대표 썸네일</label>
+							<label className="control-label col-md-3 col-sm-3 ">대표 썸네일</label>
 							<Thumnail removeFileFormState={removeFileFormState} thumbnailFileFormState={thumbnailFileFormState}/>
 
 						</div>
-						<div class="">
-							<button type="button" class="btn btn-primary" style={{color:"white"}} onClick={() => addComponent('1')}>유형01 등록</button>
-							<button type="button" class="btn btn-primary" style={{color:"white"}} onClick={() => addComponent('2')}>유형02 등록</button>
-							<button type="button" class="btn btn-primary" style={{color:"white"}} onClick={() => addComponent('3')}>유형03 등록</button>
-							<button type="button" class="btn btn-primary" style={{color:"white"}} onClick={() => addComponent('4')}>유형04 등록</button>
-							<button type="button" class="btn btn-primary" style={{color:"white"}} onClick={() => addComponent('5')}>유형05 등록</button>
-							<button type="button" class="btn btn-primary" style={{color:"white"}} onClick={() => addComponent('6')}>유형06 등록</button>
-							<button type="button" class="btn btn-primary" style={{color:"white"}} onClick={() => addComponent('7')}>유형07 등록</button>
-							<button type="button" class="btn btn-primary" style={{color:"white"}} onClick={() => addComponent('8')}>유형08 등록</button>
+						<div className="">
+							<button type="button" className="btn btn-primary" style={{color:"white"}} onClick={() => addComponent('1')}>유형01 등록</button>
+							<button type="button" className="btn btn-primary" style={{color:"white"}} onClick={() => addComponent('2')}>유형02 등록</button>
+							<button type="button" className="btn btn-primary" style={{color:"white"}} onClick={() => addComponent('3')}>유형03 등록</button>
+							<button type="button" className="btn btn-primary" style={{color:"white"}} onClick={() => addComponent('4')}>유형04 등록</button>
+							<button type="button" className="btn btn-primary" style={{color:"white"}} onClick={() => addComponent('5')}>유형05 등록</button>
+							<button type="button" className="btn btn-primary" style={{color:"white"}} onClick={() => addComponent('6')}>유형06 등록</button>
+							<button type="button" className="btn btn-primary" style={{color:"white"}} onClick={() => addComponent('7')}>유형07 등록</button>
+							<button type="button" className="btn btn-primary" style={{color:"white"}} onClick={() => addComponent('8')}>유형08 등록</button>
 						</div>
 
 						{videoForms.map((videoForm, index) => {
@@ -280,16 +271,16 @@ function AdminWorkCreate(props){
 							);
 						})}
 
-							<div class="form-group row ">
-								<label class="control-label col-md-3 col-sm-3 ">크레딧
+							<div className="form-group row ">
+								<label className="control-label col-md-3 col-sm-3 ">크레딧
 								</label>
-								<div class="col-md-6 col-sm-6 form-group row inputButtonArea">
+								<div className="col-md-6 col-sm-6 form-group row inputButtonArea">
 								{creditsForms.map((credit, index) => (
-									<div className="creditArea" key={index} data-ord={index + 1} style={{ display: "flex" }}>
+									<div classNameName="creditArea" key={index} data-ord={index + 1} style={{ display: "flex" }}>
 									<input
 									type="text"
 									name="job"
-									className="form-control"
+									classNameName="form-control"
 									value={credit.job}
 									placeholder=" "
 									onChange={(e) => {
@@ -301,7 +292,7 @@ function AdminWorkCreate(props){
 									<input
 									type="text"
 									name="name"
-									className="form-control"
+									classNameName="form-control"
 									value={credit.name}
 									placeholder=" "
 									onChange={(e) => {
@@ -313,11 +304,11 @@ function AdminWorkCreate(props){
 									{index !== 0 && ( // 첫 번째 요소일 때 삭제 버튼을 표시하지 않음
 									<button
 										type="button"
-										className="btn btn-secondary input-minus"
+										classNameName="btn btn-secondary input-minus"
 										onClick={() => handleRemoveCredit(index,credit.id)}
 										data-no={credit.creditsNo}
 									>
-										<i className="fa fa-minus"></i>
+										<i classNameName="fa fa-minus"></i>
 									</button>
 									)}
 								</div>
@@ -325,15 +316,15 @@ function AdminWorkCreate(props){
 								<button type="button" onClick={handleAddCredit}>Add Credit</button>
 								</div>
 							</div>
-							<div class="form-group row">
-								<label class="col-md-3 col-sm-3  control-label">공개 여부
+							<div className="form-group row">
+								<label className="col-md-3 col-sm-3  control-label">공개 여부
 								</label>
-								<div class="col-md-9 col-sm-9 ">
+								<div className="col-md-9 col-sm-9 ">
 								<div>
 									<label>
 									<input
 										type="radio"
-										className="flat"
+										classNameName="flat"
 										name="use_yn"
 										value="Y"
 										checked={workForm.useYn === 'Y'}
@@ -345,7 +336,7 @@ function AdminWorkCreate(props){
 									<label>
 									<input
 										type="radio"
-										className="flat"
+										classNameName="flat"
 										name="use_yn"
 										value="N"
 										checked={workForm.useYn === 'N'}
@@ -355,12 +346,11 @@ function AdminWorkCreate(props){
 								</div>
 								</div>
 							</div>
-						<div class="ln_solid"></div>
-						<div class="form-group">
-							<div class="col-md-9 col-sm-9  offset-md-3">
+						<div className="ln_solid"></div>
+						<div className="form-group">
+							<div className="col-md-9 col-sm-9  offset-md-3">
 								<button type="button" onClick={()=>{
 									
-									console.log("work데이터 " + JSON.stringify(workForm,null,2));
 /*
 									let videoForms = [];
 									for(let i=0; i<videoForms.length; i++){
@@ -375,8 +365,6 @@ function AdminWorkCreate(props){
 										videoForms.push(videoForm);
 									}
 									*/
-									console.log("videoForms 확인 ")
-							
 									for(let i=0; i<videoForms.length; i++){
 										console.log(i + " : " + JSON.stringify(videoForms[i],null,2));
 									}
@@ -430,11 +418,14 @@ function AdminWorkCreate(props){
 									)
 									.then(result => {
 									  console.log(result);
-
+									  if(result.data.status == 'OK'){
+										alert("저장되었습니다.");
+										window.location.href = "/admin/work/init";
+									  }
 									})
 
-								}}class="btn btn-success">등록</button>
-								<button type="button" class="btn btn-primary">취소</button>
+								}}className="btn btn-success">등록</button>
+								<button type="button" className="btn btn-primary">취소</button>
 
 								
 							</div>

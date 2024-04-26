@@ -5,13 +5,13 @@ function AdminWorkList(props){
   
     return(
 
-            <div class="col-md-12 col-sm-12  ">
-              <div class="x_panel">
-                  <div class="x_content">
-                    <div class="x_title" style={{textAlign: "right"}}>
-                        <a href="/admin/work/create" class="btn btn-primary" style={{color:"white" ,textAlign: "right"}}>등록</a>
+            <div className="col-md-12 col-sm-12  ">
+              <div className="x_panel">
+                  <div className="x_content">
+                    <div className="x_title" style={{textAlign: "right"}}>
+                        <a href="/admin/work/create" className="btn btn-primary" style={{color:"white" ,textAlign: "right"}}>등록</a>
                     </div>
-                    <table class="table table-hover">
+                    <table className="table table-hover">
                       <thead>
                         <tr>
                           <th>#</th>

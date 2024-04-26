@@ -43,14 +43,14 @@ function AdminContact() {
         callApiGetContentList(pagingProps,0,url);
     }, [])
     return (
-        <div class="right_col" role="main" style={{ minHeight: "814px" }}>
-            <div class="">
-                <div class="page-title">
-                    <div class="title_left"  style={{textAlign:"left" , marginLeft: "10px"}}>
+        <div className="right_col" role="main" style={{ minHeight: "814px" }}>
+            <div className="">
+                <div className="page-title">
+                    <div className="title_left"  style={{textAlign:"left" , marginLeft: "10px"}}>
                         <h3>CONTACT</h3>
                     </div>
-                    <div class="title_right">
-                        <div class="col-md-5 col-sm-5   form-group pull-right top_search">
+                    <div className="title_right">
+                        <div className="col-md-5 col-sm-5   form-group pull-right top_search">
                         </div>
                     </div>
                 </div>

@@ -6,11 +6,11 @@ function ImageTmpl(props){
         <Fragment>
             
         {!isEmpty(props.image) ? (        
-        <div class="img_box">
+        <div key={props.key} className="img_box">
             <img src={props.image.filePath} />
         </div>
             ):(
-                <div></div>
+                <div key={props.index}></div>
                 ) 
             }
         </Fragment>

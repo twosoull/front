@@ -32,71 +32,71 @@ function Contact(){
     };
               
     return(
-        <div class="content">
-            <div class="txt_area">
-                <h2 class="tit">
+        <div className="content">
+            <div className="txt_area">
+                <h2 className="tit">
                     프로젝트 문의나 의뢰가 있나요?<br />
                     <strong>루프</strong>가 도와드릴게요 :
                 </h2>
-                <p class="txt">
-                    고객보다 앞서 제안을 드리고 함께<br class="for_mob" /> 고민하여 영상을 제작합니다.<br />
-                    문의를 남겨주시면 확인 후 1~2일 이내에<br class="for_mob" /> 담당자가 연락을 드릴 예정입니다.
+                <p className="txt">
+                    고객보다 앞서 제안을 드리고 함께<br className="for_mob" /> 고민하여 영상을 제작합니다.<br />
+                    문의를 남겨주시면 확인 후 1~2일 이내에<br className="for_mob" /> 담당자가 연락을 드릴 예정입니다.
                 </p>
             </div>
-            <div class="multli_area">
-                <div class="wrap">
-                    <form id="form" action="/contact/save.do" method="post"  enctype="multipart/form-data">
-                        <div class="multi_box">
-                            <h2 class="tit">Contact</h2>
-                            <div class="con">
-                                <ul class="form">
+            <div className="multli_area">
+                <div className="wrap">
+                    <form id="form" action="/contact/save.do" method="post"  encType="multipart/form-data">
+                        <div className="multi_box">
+                            <h2 className="tit">Contact</h2>
+                            <div className="con">
+                                <ul className="form">
                                     <li>
-                                        <div class="label"><span>01</span><strong>기본 정보</strong></div>
-                                        <ul class="form_list">
-                                            <li><div class="form_input"><input type="text" name="contact_client_company" placeholder="회사명을 입력해주세요." onChange={(e)=>{
+                                        <div className="label"><span>01</span><strong>기본 정보</strong></div>
+                                        <ul className="form_list">
+                                            <li><div className="form_input"><input type="text" name="contact_client_company" placeholder="회사명을 입력해주세요." onChange={(e)=>{
                                                 updateContactClientCompany(e.target.value);
                                             }} /></div></li>
-                                            <li><div class="form_input"><input type="text" name="contact_client_name" placeholder="성함을 입력해주세요." onChange={(e)=>{
+                                            <li><div className="form_input"><input type="text" name="contact_client_name" placeholder="성함을 입력해주세요." onChange={(e)=>{
                                                 updateContactClientName(e.target.value);
                                             }}/></div></li>
-                                            <li><div class="form_input"><input type="text" name="contact_client_tel" placeholder="연락처를 입력해주세요." onChange={(e)=>{
+                                            <li><div className="form_input"><input type="text" name="contact_client_tel" placeholder="연락처를 입력해주세요." onChange={(e)=>{
                                                 updateContactClientTel(e.target.value);
                                             }}/></div></li>
-                                            <li><div class="form_input"><input type="text" name="contact_client_mail" placeholder="이메일을 입력해주세요." onChange={(e)=>{
+                                            <li><div className="form_input"><input type="text" name="contact_client_mail" placeholder="이메일을 입력해주세요." onChange={(e)=>{
                                                 updateContactClientMail(e.target.value);
                                             }}/></div></li>
                                         </ul>
                                     </li>
                                     <li>
-                                        <div class="label"><span>02</span><strong>프로젝트 정보</strong></div>
-                                        <ul class="form_list">
-                                            <li><div class="form_input"><input type="text" name="contact_project_title" placeholder="프로젝트명을 입력해주세요." onChange={(e)=>{
+                                        <div className="label"><span>02</span><strong>프로젝트 정보</strong></div>
+                                        <ul className="form_list">
+                                            <li><div className="form_input"><input type="text" name="contact_project_title" placeholder="프로젝트명을 입력해주세요." onChange={(e)=>{
                                                 updateContactProjectTitle(e.target.value);
                                             }} /></div></li>
-                                            <li><div class="form_input"><input type="text" name="contact_project_schedule" placeholder="제작일정을 입력해주세요." onChange={(e)=>{
+                                            <li><div className="form_input"><input type="text" name="contact_project_schedule" placeholder="제작일정을 입력해주세요." onChange={(e)=>{
                                                 updateContactProjectSchedule(e.target.value);
                                             }} /></div></li>
                                             <li>
-                                                <div class="form_select">
+                                                <div className="form_select">
                                                     <button type="button" >영상 길이를 선택해주세요.</button>
                                                     <ul>
-                                                        <li><button type="button" class="length" data-value="30초 이내"
+                                                        <li><button type="button" className="length" data-value="30초 이내"
                                                         onClick={(e)=>{
                                                             updateContactVideoLength("30초 이내");
                                                         }}>30초 이내</button></li>
-                                                        <li><button type="button" class="length" data-value="30초 ~ 1분이내"
+                                                        <li><button type="button" className="length" data-value="30초 ~ 1분이내"
                                                         onClick={(e)=>{
                                                             updateContactVideoLength("30초 ~ 1분이내");
                                                         }}>30초 ~ 1분이내</button></li>
-                                                        <li><button type="button" class="length" data-value="1분 ~ 2분"
+                                                        <li><button type="button" className="length" data-value="1분 ~ 2분"
                                                         onClick={(e)=>{
                                                             updateContactVideoLength("1분 ~ 2분");
                                                         }}>1분 ~ 2분</button></li>
-                                                        <li><button type="button" class="length" data-value="2분 ~ 3분"
+                                                        <li><button type="button" className="length" data-value="2분 ~ 3분"
                                                         onClick={(e)=>{
                                                             updateContactVideoLength("2분 ~ 3분");
                                                         }}>2분 ~ 3분</button></li>
-                                                        <li><button type="button" class="length" data-value="3분 이상"
+                                                        <li><button type="button" className="length" data-value="3분 이상"
                                                         onClick={(e)=>{
                                                             updateContactVideoLength("3분 이상");
                                                         }}>3분 이상</button></li>
@@ -104,81 +104,89 @@ function Contact(){
                                                 </div>
                                             </li>
                                             <li>
-                                                <div class="form_select">
+                                                <div className="form_select">
                                                     <button type="button" >제작 예산을 선택해주세요.</button>
                                                     <ul>
-                                                        <li><button type="button" class="budget" data-value="500만 원 이내"
+                                                        <li><button type="button" className="budget" data-value="500만 원 이내"
                                                         onClick={(e)=>{
                                                             updatecontactBudget("500만 원 이내");
                                                         }}>500만 원 이내</button></li>
-                                                        <li><button type="button" class="budget" data-value="1000 ~ 1500 만 원"
+                                                        <li><button type="button" className="budget" data-value="1000 ~ 1500 만 원"
                                                         onClick={(e)=>{
                                                             updatecontactBudget("1000 ~ 1500 만 원");
                                                         }}>1000 ~ 1500 만 원</button></li>
-                                                        <li><button type="button" class="budget" data-value="1500 ~ 2000 만 원"
+                                                        <li><button type="button" className="budget" data-value="1500 ~ 2000 만 원"
                                                         onClick={(e)=>{
                                                             updatecontactBudget("1500 ~ 2000 만 원");
                                                         }}>1500 ~ 2000 만 원</button></li>
-                                                        <li><button type="button" class="budget" data-value="3000 ~ 4000 만 원"
+                                                        <li><button type="button" className="budget" data-value="3000 ~ 4000 만 원"
                                                         onClick={(e)=>{
                                                             updatecontactBudget("3000 ~ 4000 만 원");
                                                         }}>3000 ~ 4000 만 원</button></li>
-                                                        <li><button type="button" class="budget" data-value="5000 만 원 이상"
+                                                        <li><button type="button" className="budget" data-value="5000 만 원 이상"
                                                         onClick={(e)=>{
                                                             updatecontactBudget("5000 만 원 이상");
                                                         }}>5000 만 원 이상</button></li>
-                                                        <li><button type="button" class="budget" data-value="기타협의 필요"
+                                                        <li><button type="button" className="budget" data-value="기타협의 필요"
                                                         onClick={(e)=>{
                                                             updatecontactBudget("기타협의 필요");
                                                         }}>기타협의 필요</button></li>
                                                     </ul>
                                                 </div>
                                             </li>
-                                            <li class="w100p"><div class="form_textarea"><textarea name="contact_content" placeholder="상담내용이나 참고할 레퍼런스 URL 등 자유롭게 작성해주세요."onChange={(e)=>{
+                                            <li className="w100p"><div className="form_textarea"><textarea name="contact_content" placeholder="상담내용이나 참고할 레퍼런스 URL 등 자유롭게 작성해주세요."onChange={(e)=>{
                                                 updateContactContent(e.target.value);
                                             }}></textarea></div></li>
-                                            <li class="w100p pt0">
+                                            <li className="w100p pt0">
 
                                                     {files && files.length > 0 ? (
-                                                        <div class="form_attach">
-                                                                <div class="form_attach_con" id="file_box">
+                                                        <div className="form_attach">
+                                                                <div className="form_attach_con" id="file_box">
 
-                                                                <div id="attachment" class="attachment">
+                                                                <div id="attachment" className="attachment">
                                                                     <a href="javascript:;">{files[0].name}</a>
-                                                                    <button type="button" id="remove_file" class="btn_del"
+                                                                    <button type="button" id="remove_file" className="btn_del"
                                                                     onClick={()=>{
                                                                         setFiles('');
-                                                                    }}><span class="blind">삭제</span></button>
+                                                                    }}><span className="blind">삭제</span></button>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     ) : (
-                                                        <div class="form_attach">
-                                                                <div id="form_attach_btn" class="form_attach_btn">
+                                                        <div className="form_attach">
+                                                                <div id="form_attach_btn" className="form_attach_btn">
                                                             
                                                                 <input type="file" name="contact_file" id="attach" onChange={(e) => handleFileChange(e.target.files)} />
-                                                                    <label for="attach">파일첨부</label>
+                                                                    <label htmlFor="attach">파일첨부</label>
                                                                 </div>
-                                                                <div class="form_attach_con" id="file_box">
+                                                                <div className="form_attach_con" id="file_box">
                                                                     <span id="file_info" style={{color:"grey"}}>  * 파일이 여러개일 경우 압축파일로 첨부해주세요.</span>
 
-                                                                    <div id="attachment" class="attachment"></div>
+                                                                    <div id="attachment" className="attachment"></div>
                                                                 </div>
                                                         </div>
                                                     )}
                                             </li>
                                         </ul>
                                     </li>
-                                    <li class="w100p mt20">
-                                        <div class="form_chk">
+                                    <li className="w100p mt20">
+                                        <div className="form_chk">
                                             <input type="checkbox" id="privacy" />
-                                            <label for="privacy"><strong>개인정보활용</strong> 에 동의합니다.</label>
+                                            <label htmlFor="privacy"><strong>개인정보활용</strong> 에 동의합니다.</label>
                                         </div>
                                     </li>
                                 </ul>
                             </div>
-                            <div class="btn_box">
+                            <div className="btn_box">
                                 <input id="sub" type="button" onClick={()=>{
+                                    const checkbox = document.getElementById('privacy');
+                                    
+                                    if (!checkbox.checked) {
+                                        alert("개인정보활용에 동의해주세요.");
+                                        return false;
+                                    }
+
+                                    if(window.confirm("메일 발송까지 5초 정도의 시간이 발생합니다. 참고 부탁드리겠습니다.")){
 										console.log(" 확인 : " + JSON.stringify(contact,null,2));
 
                                         console.log('API 호출');
@@ -199,19 +207,22 @@ function Contact(){
                                         formData.append('contactForm', blob);
 
                                         // API 호출
-                                        
                                         axios.post("/api/contact/save", formData, {
                                             headers: {
-                                            'Content-Type': 'multipart/form-data'
+                                                'Content-Type': 'multipart/form-data'
                                             }
                                         }).then(result => {
-                                            console.log(result);
+                                            if(result.data.status = 'OK'){
+                                                alert("확인 후 1~2일 이내에 담당자가 연락을 드릴 예정입니다. 감사합니다.");
+                                                window.location.href = "/contact/init";
+                                            }
                                         }).catch(function (error) {
                                             alert(error.response.data.errors[0].message);
-
+                                            
                                         })
+                                    }
                                         
-                                }}value="문의하기" class="btn_submit" />
+                                }}value="문의하기" className="btn_submit" />
                             </div>
                         </div>
                         <input type="hidden" id="contact_video_length" name="contact_video_length" value="" />

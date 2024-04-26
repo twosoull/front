@@ -7,18 +7,20 @@ import WorkView from "./work/workView";
 import WorkList from "./work/workList";
 import About from "./about/about";
 import Contact from "./contact/contact";
+import { useState } from "react";
 
 function Front(){
+
     return(
-        <div class="wrapper">
+        <div className="wrapper">
             <UserHead />
             <Header />
             <Routes>
 					<Route path="/" element={<Main />  } />            
 					<Route path="/work/view/:id" element={<WorkView />  } />
-                    <Route path="/work/init" element={<WorkList />  } />
-                    <Route path="/about/init" element={<About />  } />
-                    <Route path="/contact/init" element={<Contact />  } />
+                    <Route path="/work" element={<WorkList />  } />
+                    <Route path="/about" element={<About />  } />
+                    <Route path="/contact" element={<Contact />  } />
 			</Routes>
             <Footer />
         </div>

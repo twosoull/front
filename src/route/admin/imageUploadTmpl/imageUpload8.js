@@ -24,8 +24,8 @@ const ImageUpload8 = (props) => {
             <VideoForm videoForm={props.videoForm} updateVideoMethod={props.updateVideoMethod} order={props.order}/>
         </div>
         <div id="imageBox08">
-            <div class="form-group row ">
-                <label class="control-label col-md-3 col-sm-3 ">이미지</label>
+            <div className="form-group row ">
+                <label className="control-label col-md-3 col-sm-3 ">이미지</label>
                 <div>
                     <div className="image_tmpl8-1">
                         <div className="image_flex">

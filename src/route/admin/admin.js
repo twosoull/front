@@ -9,47 +9,47 @@ import AdminWork from "./work/adminWork";
 import AdminHead from "./inc/adminHead";
 function Admin(){
     return (
-	<div class="nav-md">
-        <div class="container body">   
+	<div className="nav-md">
+        <div className="container body">   
 			<AdminHead/>
-    		<div className="main_container">
+    		<div classNameName="main_container">
 				<Sidebar></Sidebar>
-				<div class="top_nav">
-					<div class="nav_menu">
-						<div class="nav toggle">
+				<div className="top_nav">
+					<div className="nav_menu">
+						<div className="nav toggle">
 						</div>
-						<nav class="nav navbar-nav">
-							<ul class=" navbar-right">
-								<li class="nav-item dropdown open" style={{paddingLeft: "15px"}}>
-									<a href="javascript:;" class=" dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+						<nav className="nav navbar-nav">
+							<ul className=" navbar-right">
+								<li className="nav-item dropdown open" style={{paddingLeft: "15px"}}>
+									<a href="javascript:;" className=" dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
 										Loop
 									</a>
 
 								</li>
 
-								<li role="presentation" class="nav-item dropdown open"><a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
-										<i class="fa fa-envelope-o"></i> <span class="badge bg-green">6</span>
+								<li role="presentation" className="nav-item dropdown open"><a href="javascript:;" className="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
+										<i className="fa fa-envelope-o"></i> <span className="badge bg-green">6</span>
 								</a>
-									<ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
-										<li class="nav-item"><a class="dropdown-item"> <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span> <span> <span>John Smith</span> <span class="time">3 mins ago</span>
-											</span> <span class="message"> Film festivals used to be
+									<ul className="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
+										<li className="nav-item"><a className="dropdown-item"> <span className="image"><img src="images/img.jpg" alt="Profile Image" /></span> <span> <span>John Smith</span> <span className="time">3 mins ago</span>
+											</span> <span className="message"> Film festivals used to be
 													do-or-die moments for movie makers. They were where... </span>
 										</a></li>
-										<li class="nav-item"><a class="dropdown-item"> <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span> <span> <span>John Smith</span> <span class="time">3 mins ago</span>
-											</span> <span class="message"> Film festivals used to be
+										<li className="nav-item"><a className="dropdown-item"> <span className="image"><img src="images/img.jpg" alt="Profile Image" /></span> <span> <span>John Smith</span> <span className="time">3 mins ago</span>
+											</span> <span className="message"> Film festivals used to be
 													do-or-die moments for movie makers. They were where... </span>
 										</a></li>
-										<li class="nav-item"><a class="dropdown-item"> <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span> <span> <span>John Smith</span> <span class="time">3 mins ago</span>
-											</span> <span class="message"> Film festivals used to be
+										<li className="nav-item"><a className="dropdown-item"> <span className="image"><img src="images/img.jpg" alt="Profile Image" /></span> <span> <span>John Smith</span> <span className="time">3 mins ago</span>
+											</span> <span className="message"> Film festivals used to be
 													do-or-die moments for movie makers. They were where... </span>
 										</a></li>
-										<li class="nav-item"><a class="dropdown-item"> <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span> <span> <span>John Smith</span> <span class="time">3 mins ago</span>
-											</span> <span class="message"> Film festivals used to be
+										<li className="nav-item"><a className="dropdown-item"> <span className="image"><img src="images/img.jpg" alt="Profile Image" /></span> <span> <span>John Smith</span> <span className="time">3 mins ago</span>
+											</span> <span className="message"> Film festivals used to be
 													do-or-die moments for movie makers. They were where... </span>
 										</a></li>
-										<li class="nav-item">
-											<div class="text-center">
-												<a class="dropdown-item"> <strong>See All Alerts</strong> <i class="fa fa-angle-right"></i>
+										<li className="nav-item">
+											<div className="text-center">
+												<a className="dropdown-item"> <strong>See All Alerts</strong> <i className="fa fa-angle-right"></i>
 												</a>
 											</div>
 										</li>

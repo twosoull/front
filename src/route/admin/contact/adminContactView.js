@@ -47,25 +47,25 @@ function AdminContactView(){
 
     console.log(contactClientCompany);
     return(
-        <div class="right_col" role="main">
-            <div class="">
-                <div class="page-title">
-                    <div class="title_left">
+        <div className="right_col" role="main">
+            <div className="">
+                <div className="page-title">
+                    <div className="title_left">
                         <h3>Form Elements</h3>
                     </div>
-                    <div class="title_right">
-                        <div class="col-md-5 col-sm-5  form-group pull-right top_search">
+                    <div className="title_right">
+                        <div className="col-md-5 col-sm-5  form-group pull-right top_search">
 
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12 col-sm-12 ">
-                    <div class="x_panel">
-                        <div class="x_content">
-                            <div class="col-md-6">
-                                <p class="lead">contact - 상세</p>
-                                <div class="table-responsive">
-                                    <table class="table">
+                <div className="col-md-12 col-sm-12 ">
+                    <div className="x_panel">
+                        <div className="x_content">
+                            <div className="col-md-6">
+                                <p className="lead">contact - 상세</p>
+                                <div className="table-responsive">
+                                    <table className="table">
                                         <tbody>
                                             <tr>
                                                 <th style={{width:"50%"}}>회사명</th>
@@ -105,13 +105,13 @@ function AdminContactView(){
                                             </tr>
                                             <tr>
                                                 <th>첨부파일</th>
-                                                <td><a onClick={()=>{
-                                                    let params = { fileName : saveFileName, responseType : 'blob'}
-                                                    let url = "/api/fileDownload?fileName=" + saveFileName;
+                                                <td><a style={{color:"blue"}} onClick={()=>{
+                                                    console.log(orgFileName);
+                                                    let url = "/api/fileDownload?fileName=" + saveFileName + "&orgFileName=" + orgFileName;
                                                     axios.get(url, { responseType: 'blob' }).then((response) => {
                                                         const contentDisposition = response.headers['content-disposition'];
                                                         if (contentDisposition) {
-                                                            const name = contentDisposition.split('fileName=')[1];
+                                                            const name = orgFileName;
                                                             const url = window.URL.createObjectURL(new Blob([response.data]));
                                                             const link = document.createElement('a');
                                                             link.href = url;

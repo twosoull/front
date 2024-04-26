@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 function WorkList(){
-
+    
     let [workList, setWorkList] = useState([]);
     useEffect(() => {
         axios.get("/api/work/init").then((result) => {
@@ -20,10 +20,10 @@ function WorkList(){
         });
     },[setWorkList]);
     return (
-        <div class="content">
-            <div class="work_area">
-                <div class="wrap">
-                    <ul class="work_list">
+        <div className="content">
+            <div className="work_area">
+                <div className="wrap">
+                    <ul className="work_list">
                     {
                           workList.map((work, index) => {
                             return (<MainResultList work={work}/>)
@@ -41,11 +41,11 @@ function MainResultList(props) {
 
         <li>
         <Link to={`/work/view/${props.work.id}`} state={{ id : props.work.id }}>
-            <div class="img_box">
+            <div className="img_box">
                 {props.work.files && <img src={props.work.files.filePath} alt="Work Image" />}
             </div>
-            <div class="txt_box">
-                <div class="title">{props.work.workTitle}</div>
+            <div className="txt_box">
+                <div className="title">{props.work.workTitle}</div>
 
             </div>
         </Link>

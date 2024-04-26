@@ -122,7 +122,7 @@ function Thumnail(props){
       };
 
     return(
-        <div class="col-md-9 col-sm-9 ">
+        <div className="col-md-9 col-sm-9 ">
 										
         {images.length > 0 ? (
                 images.map(image => (

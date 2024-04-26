@@ -4,12 +4,11 @@ import { Paging, callApiGetContentList } from '../../utils/pagingUtil.js';
 import {Navbar,Container,Nav,Button,Row,Col} from 'react-bootstrap';
 import axios from 'axios';
 function AdminContactList(props){
-    console.log(props.pagingProps);
     return(
-            <div class="col-md-12 col-sm-12  ">
-                <div class="x_panel">
-                    <div class="x_content">
-                        <table class="table table-hover">
+            <div className="col-md-12 col-sm-12  ">
+                <div className="x_panel">
+                    <div className="x_content">
+                        <table className="table table-hover">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -46,7 +45,7 @@ function ResultList(props) {
             <td>{props.contact.contactClientName}</td>
             <td>{props.contact.contactProjectSchedule}</td>
             <td>{props.contact.regDate}</td>
-            <td><button type='button' class="btn btn-primary" style={{color:"white"}} onClick={()=>{
+            <td><button type='button' className="btn btn-primary" style={{color:"white"}} onClick={()=>{
 
                 if(window.confirm("정말 삭제 하시겠습니까?")){
                     let params = { contactId : props.contact.contact_no}

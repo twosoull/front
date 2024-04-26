@@ -15,15 +15,15 @@ function VideoTmpl7(props){
     return(
         <Fragment>
             {/* 유형 7 WEB_4개, MOBILE_4개*/}
-            <li class="w100p">
-                <ul class="img_list">
-                    <li class="w33p ${file104}"><ImageTmpl image={props.video.files[0]}/></li>
-                    <li class="w33p ${file104}"><ImageTmpl image={props.video.files[1]}/></li>
-                    <li class="w33p ${file104}"><ImageTmpl image={props.video.files[2]}/></li>
+            <li className="w100p">
+                <ul className="img_list">
+                    <li className="w33p ${file104}"><ImageTmpl image={props.video.files[0]}/></li>
+                    <li className="w33p ${file104}"><ImageTmpl image={props.video.files[1]}/></li>
+                    <li className="w33p ${file104}"><ImageTmpl image={props.video.files[2]}/></li>
                 </ul>
             </li>
-            <li class="w50p ${file104}"><ImageTmpl image={props.video.files[3]}/></li>
-            <li class="w50p ${file104}"><ImageTmpl image={props.video.files[4]}/></li>
+            <li className="w50p ${file104}"><ImageTmpl image={props.video.files[3]}/></li>
+            <li className="w50p ${file104}"><ImageTmpl image={props.video.files[4]}/></li>
             {/*WEB_4개, MOBILE_4개*/}
         </Fragment>
     )

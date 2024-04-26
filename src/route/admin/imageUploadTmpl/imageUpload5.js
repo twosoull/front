@@ -24,8 +24,8 @@ const ImageUpload5 = (props) => {
         <VideoForm videoForm={props.videoForm} updateVideoMethod={props.updateVideoMethod} order={props.order}/>
       </div>
       <div id="imageBox05">
-        <div class="form-group row ">
-          <label class="control-label col-md-3 col-sm-3 ">이미지</label>
+        <div className="form-group row ">
+          <label className="control-label col-md-3 col-sm-3 ">이미지</label>
           <div className="image_tmpl5 image_flex_width600">
               <ImageUploadBox file={props.videoForm.files[0]} picOrd={1} removeFileFormState={props.removeFileFormState} saveFileState={props.saveFileState} videoForm={props.videoForm} clickRemoveFileIdState={clickRemoveFileIdState}/>
               <div className="image_tmpl5-1">

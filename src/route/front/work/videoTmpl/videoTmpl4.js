@@ -15,10 +15,10 @@ function VideoTmpl4(props){
     return(
         <Fragment>
             {/*유형 4 WEB_4개, MOBILE_4개*/} 
-            <li class="w50p ${file101}"><ImageTmpl image={props.video.files[0]} /></li>
-            <li class="w50p ${file101}"><ImageTmpl image={props.video.files[1]} /></li>
-            <li class="w50p ${file101}"><ImageTmpl image={props.video.files[2]} /></li>
-            <li class="w50p ${file101}"><ImageTmpl image={props.video.files[3]} /></li>
+            <li className="w50p ${file101}"><ImageTmpl image={props.video.files[0]} /></li>
+            <li className="w50p ${file101}"><ImageTmpl image={props.video.files[1]} /></li>
+            <li className="w50p ${file101}"><ImageTmpl image={props.video.files[2]} /></li>
+            <li className="w50p ${file101}"><ImageTmpl image={props.video.files[3]} /></li>
 
         </Fragment>
     )

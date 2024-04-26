@@ -37,18 +37,18 @@ function Paging(props){
 	    if (props.pagingProps.pageCount > lastNum) { firstNum = 1 }
         
         return (
-            <div class="col-sm-7">
-                <div class="dataTables_paginate paging_simple_numbers" id="datatable_paginate">
-                    <ul class="pagination">
+            <div className="col-sm-7">
+                <div className="dataTables_paginate paging_simple_numbers" id="datatable_paginate">
+                    <ul className="pagination">
                         {
                             firstNum === 1 ? <li></li>: 
-                            <li class="paginate_button previous disabled" id="datatable-checkbox_previous" ><a href="#" aria-controls="datatable-checkbox" onClick={()=>props.pagingProps.setPageGroup(props.pagingProps.pageGroup-1)}  >&lt;</a></li>
+                            <li className="paginate_button previous disabled" id="datatable-checkbox_previous" ><a href="#" aria-controls="datatable-checkbox" onClick={()=>props.pagingProps.setPageGroup(props.pagingProps.pageGroup-1)}  >&lt;</a></li>
                         }
                             <Page pagingProps={props.pagingProps} firstNum={firstNum} lastNum={lastNum}/>
                         {
 
                             lastNum === props.pagingProps.totalPage ? <div></div> : 
-                            <li class="paginate_button next" id="datatable-checkbox_next"><a href="#" aria-controls="datatable-checkbox" data-dt-idx="7" tabindex="0" onClick={()=>{props.pagingProps.setPageGroup(props.pagingProps.pageGroup+1)}} >&gt;</a></li>
+                            <li className="paginate_button next" id="datatable-checkbox_next"><a href="#" aria-controls="datatable-checkbox" data-dt-idx="7" tabindex="0" onClick={()=>{props.pagingProps.setPageGroup(props.pagingProps.pageGroup+1)}} >&gt;</a></li>
 
                         }
                     </ul>
@@ -61,7 +61,7 @@ function Page(props){
     let arr = []
     for (let i = props.firstNum; i <= props.lastNum; i++) {
         arr.push(
-        <li class="paginate_button active">
+        <li className="paginate_button active">
             <a href="#"  aria-controls="datatable" 
             onClick={()=>{
                 let pageNum = i-1;

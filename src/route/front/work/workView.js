@@ -10,8 +10,11 @@ import VideoTmpl6 from "./videoTmpl/videoTmpl6";
 import VideoTmpl5 from "./videoTmpl/videoTmpl5";
 import VideoTmpl7 from "./videoTmpl/videoTmpl7";
 import VideoTmpl8 from "./videoTmpl/videoTmpl8";
+import ErrorBoundary from "../../error/ErrorBoundary";
+import IframComponent from "./iframComponent";
 
-function WorkView(){
+function WorkView(props){
+    
     let [work, setWork] = useState();
     let [videos, setVideos] = useState([{videoTitle:'d',videoContent:'d',videoUrl:'d'}]);
     let [credits, setCredits] = useState([]);
@@ -21,7 +24,6 @@ function WorkView(){
     let params = { workId : workId}
     useEffect(() => {
         axios.get("/api/work/findId",{params}).then((result) => {
-            console.log("분석 : " + JSON.stringify(result.data.data,null,2));
             if (isEmpty(result.data.code)) {
                 setWork(result.data.data);
                 setVideos(result.data.data.videos);
@@ -35,36 +37,38 @@ function WorkView(){
 
 
     return(
-        <div class="content">
-            <div class="contents_box">
-                <div class="txt_area">
-                    <div class="wrap video_detail_area">
-                        <h2 class="tit ">{videos[0].videoTitle}</h2>
-                            <p class="txt">{videos[0].videoContent}
+        <div className="content">
+            <div className="contents_box">
+                <div className="txt_area">
+                    <div className="wrap video_detail_area">
+                        <h2 className="tit ">{videos[0].videoTitle}</h2>
+                            <p className="txt">{videos[0].videoContent}
                             </p>
                     </div>
                 </div>
-                <div class="video_url_area">
-                    <div class="video_area">
-                        <div class="wrap">
-                            <iframe src="" title="INAE - The most scalable coin"></iframe>
+                <div className="video_url_area">
+                    <div className="video_area">
+                        <div className="wrap">
+                        <ErrorBoundary>
+                                <IframComponent key={0} videoUrl={videos[0].videoUrl}></IframComponent>
+                                </ErrorBoundary>
                         </div>
                     </div>
                 </div>
-                <div class="img_area">
-                    <div class="wrap">
-                        <ul class="img_list">
+                <div className="img_area">
+                    <div className="wrap">
+                        <ul className="img_list">
                             {videos.map((video, index)=>{
                                 return(
-                                    <Fragment>
-                                        {video.videoType === '1' && <VideoTmpl1 video={video} /> }
-                                        {video.videoType === '2' && <VideoTmpl2 video={video} /> }
-                                        {video.videoType === '3' && <VideoTmpl3 video={video} /> }
-                                        {video.videoType === '4' && <VideoTmpl4 video={video} /> }
-                                        {video.videoType === '5' && <VideoTmpl5 video={video} /> }
-                                        {video.videoType === '6' && <VideoTmpl6 video={video} /> }
-                                        {video.videoType === '7' && <VideoTmpl7 video={video} /> }
-                                        {video.videoType === '8' && <VideoTmpl8 video={video} /> }
+                                    <Fragment key={index}>
+                                        {video.videoType === '1' && <VideoTmpl1 key={index} video={video} /> }
+                                        {video.videoType === '2' && <VideoTmpl2 key={index} video={video} /> }
+                                        {video.videoType === '3' && <VideoTmpl3 key={index} video={video} /> }
+                                        {video.videoType === '4' && <VideoTmpl4 key={index} video={video} /> }
+                                        {video.videoType === '5' && <VideoTmpl5 key={index} video={video} /> }
+                                        {video.videoType === '6' && <VideoTmpl6 key={index} video={video} /> }
+                                        {video.videoType === '7' && <VideoTmpl7 key={index} video={video} /> }
+                                        {video.videoType === '8' && <VideoTmpl8 key={index} video={video} /> }
                                     </Fragment>
                                     );
                             })};
@@ -72,28 +76,26 @@ function WorkView(){
                     </div>
                 </div>
                 </div>
-            <div class="multli_area">
-                <div class="wrap">
-                    <div class="multi_box">
-                        <h2 class="tit">Project</h2>
-                        <div class="con">
-                            <ul class="form">
-
-                                    <li>
-                                        {credits.map((credit,index)=>{
-                                            return(
-                                                <Fragment>
-                                                    <div class="label"><span>{index}</span><strong>{credit.job}</strong></div>
-                                                    <div class="txt">{credit.name}</div>
-                                                </Fragment>
-                                            )
-                                        })}
-                                    </li>
-
+            <div className="multli_area">
+                <div className="wrap">
+                    <div className="multi_box">
+                        <h2 className="tit">Project</h2>
+                        <div className="con">
+                            <ul className="form">
+                                {credits.map((credit,index)=>{
+                                    return(
+                                        <Fragment key={index}>
+                                            <li>
+                                                <div className="label"><span>{index + 1}</span><strong>{credit.job}</strong></div>
+                                                <div className="txt">{credit.name}</div>
+                                            </li>
+                                        </Fragment>
+                                    )
+                                })}
                             </ul>
                         </div>
-                        <div class="btn_box">
-                            <a href="/work/init" class="btn_basic">목록</a>
+                        <div className="btn_box">
+                            <a href="/work" className="btn_basic">목록</a>
                         </div>
                     </div>
                 </div>

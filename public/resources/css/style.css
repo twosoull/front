@@ -13,6 +13,7 @@
 
 .header .gnb > li > a{display:block; padding:10px 20px; font-size:20px; line-height:24px; color:#333; font-weight:500; transition:color .3s;}
 .header .gnb > li.active > a,
+.header .gnb > li > a.active,
 .header .gnb > li > a:hover,
 .header .gnb > li > a:focus{color:#F72D67}
 

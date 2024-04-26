@@ -45,10 +45,10 @@ function AdminWork(){
     let createApiUri="http://localhost:3000/api/admin/work/save";
     
     return (
-        <div class="right_col" role="main" style={{ minHeight: "476.25px" }}>
+        <div className="right_col" role="main" style={{ minHeight: "476.25px" }}>
             <div>
-            <div class="page-title">
-                <div class="title_left" style={{textAlign:"left" , marginLeft: "10px"}}>
+            <div className="page-title">
+                <div className="title_left" style={{textAlign:"left" , marginLeft: "10px"}}>
                     <h3>WORK</h3>
                 </div>
             </div>
