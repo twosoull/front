@@ -14,7 +14,7 @@ class IframeComponent extends Component {
     // 1초 후에 isLoaded 상태를 true로 변경하여 리턴 태그를 보여줍니다.
     setTimeout(() => {
       this.setState({ isLoaded: true });
-    }, 100);
+    }, 200);
   }
 
   handleLoad = () => {

@@ -10,10 +10,7 @@ function Main(){
         axios.get("/api/main").then((result) => {
             if (isEmpty(result.data.code)) {
                 setWorkList(result.data.data);
-            } else if (result.data.code == 'NOT_USER') {
-                alert(result.data.message);
-                window.location.href = "/admin/login";
-            }
+            } 
         });
     },[setWorkList]);
     return (

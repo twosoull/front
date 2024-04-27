@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,KeyboardEvent} from "react";
 import AdminHead from "../inc/adminHead";
 import axios from "axios";
 
@@ -10,6 +10,27 @@ function Login(){
 
     const updateUserPw = (value) => {setUser(prevUser => ({...prevUser,
         userPw: value}));};
+
+
+    function submit(){
+      
+        console.log(" 확인 : " + JSON.stringify(user,null,2));
+        console.log('API 호출');
+        
+        axios.post("/api/admin/login", user
+        ).then(result => {
+            console.log(result.data);
+            if(result.data.status == "OK"){
+                window.location.href="/admin/work/init";
+            }else{
+                alert(result.data.message);
+            }
+        }).catch(function (error) {
+
+        })
+        
+    }
+  
     return(
         <div>
             <AdminHead/>
@@ -19,7 +40,7 @@ function Login(){
         <div className="login_wrapper">
           <div className="animate form login_form">
             <section className="login_content">
-              <form>
+              <form name="form">
                 <h1 style={{textShadow:"none",color:"white"}}>Loop Motion Studio</h1>
                 <div>
                   <input type="text" className="form-control" placeholder="아이디를 입력해주세요" required="" 
@@ -31,27 +52,16 @@ function Login(){
                   <input type="password" className="form-control" placeholder="비밀번호를 입력해주세요" required="" 
                   onChange={(e)=>{
                     updateUserPw(e.target.value);
+                  }}
+                  onKeyPress={(e)=>{
+                    if(e.code=='Enter'){
+                      submit();
+                    }
                   }}/>
                 </div>
                 <div>
                   <button className="btn btn-default submit" type="button" style={{textShadow:"none",color:"white",fontSize:"18px"}}
-                  onClick={()=>{
-                    console.log(" 확인 : " + JSON.stringify(user,null,2));
-
-                    console.log('API 호출');
-                    
-                    axios.post("/api/admin/login", user
-                    ).then(result => {
-                        console.log(result.data.status);
-                        if(result.data.status == "OK"){
-                            window.location.href="/admin/work/init";
-                        }
-                    }).catch(function (error) {
-                        alert(error.response.data.errors[0].message);
-
-                    })
-                    
-                }}>로그인</button>
+                  onClick={()=> {submit();} }>로그인</button>
                 </div>
   
                 <div className="clearfix"></div>

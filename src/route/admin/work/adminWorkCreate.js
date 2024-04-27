@@ -55,6 +55,7 @@ function AdminWorkCreate(props){
 			axios.get(url,{params}).then((result) => {
 				let status = result.data.status;
 				let data = result.data.data;
+				console.log("확인 "+  JSON.stringify(result.data,null,2));
 				setWorkForm({workId:result.data.data.id , workTitle:result.data.data.workTitle, useYn:result.data.data.useYn});
 				setVideoForms(result.data.data.videos);
 				//setComponentOrder(result.data.data.videos.length);

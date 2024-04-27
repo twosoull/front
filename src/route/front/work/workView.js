@@ -28,6 +28,7 @@ function WorkView(props){
                 setWork(result.data.data);
                 setVideos(result.data.data.videos);
                 setCredits(result.data.data.credits);
+                console.log(result.data.data.videos);
             } else if (result.data.code == 'NOT_USER') {
                 alert(result.data.message);
                 window.location.href = "/admin/login";
@@ -39,28 +40,35 @@ function WorkView(props){
     return(
         <div className="content">
             <div className="contents_box">
-                <div className="txt_area">
-                    <div className="wrap video_detail_area">
-                        <h2 className="tit ">{videos[0].videoTitle}</h2>
-                            <p className="txt">{videos[0].videoContent}
-                            </p>
-                    </div>
-                </div>
-                <div className="video_url_area">
-                    <div className="video_area">
-                        <div className="wrap">
-                        <ErrorBoundary>
-                                <IframComponent key={0} videoUrl={videos[0].videoUrl}></IframComponent>
-                                </ErrorBoundary>
+
+                <div className="img_area">
+                {videos.map((video, index)=>{
+                    return(
+                    <Fragment key={index}>
+                        {
+                        video.videoTitle.trim() !="" && video.videoContent.trim() !=''  &&
+                            <div className="txt_area">
+                        <div className="wrap video_detail_area">
+                            <h2 className={index >0 ? 'tit contents_margin30' : 'tit'}>{video.videoTitle}</h2>
+                                <p className="txt">{video.videoContent}
+                                </p>
                         </div>
                     </div>
-                </div>
-                <div className="img_area">
+                    }
+                            {
+                            video.videoUrl.trim() !="" &&
+                                <div className="video_url_area">
+                                    <div className="video_area">
+                                        <div className="wrap">
+                                            <IframComponent key={0} videoUrl={video.videoUrl} />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
                     <div className="wrap">
                         <ul className="img_list">
-                            {videos.map((video, index)=>{
-                                return(
-                                    <Fragment key={index}>
+
+                                        
                                         {video.videoType === '1' && <VideoTmpl1 key={index} video={video} /> }
                                         {video.videoType === '2' && <VideoTmpl2 key={index} video={video} /> }
                                         {video.videoType === '3' && <VideoTmpl3 key={index} video={video} /> }
@@ -69,12 +77,15 @@ function WorkView(props){
                                         {video.videoType === '6' && <VideoTmpl6 key={index} video={video} /> }
                                         {video.videoType === '7' && <VideoTmpl7 key={index} video={video} /> }
                                         {video.videoType === '8' && <VideoTmpl8 key={index} video={video} /> }
-                                    </Fragment>
-                                    );
-                            })};
+
                         </ul>
                     </div>
+                                    </Fragment>
+                    
+                    );
+                })}
                 </div>
+
                 </div>
             <div className="multli_area">
                 <div className="wrap">

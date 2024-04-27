@@ -8,6 +8,7 @@ import WorkList from "./work/workList";
 import About from "./about/about";
 import Contact from "./contact/contact";
 import { useState } from "react";
+import RedirectMain from "./redirectMain";
 
 function Front(){
 
@@ -21,6 +22,9 @@ function Front(){
                     <Route path="/work" element={<WorkList />  } />
                     <Route path="/about" element={<About />  } />
                     <Route path="/contact" element={<Contact />  } />
+                    <Route path="/*" element={
+                        <RedirectMain />
+                    } />
 			</Routes>
             <Footer />
         </div>
