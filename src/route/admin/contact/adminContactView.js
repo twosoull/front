@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { callDetailPage } from "../../utils/pagingUtil";
 import axios from 'axios';
+import apiUrl from "../../../apiUrl";
 
 function AdminContactView(){
 
     const findParams = useParams();
     let contactId = findParams.id;
 
-    let url = "/api/admin/contact/findId";
+    let url = apiUrl + "/admin/contact/findId";
     let params = { contactId : contactId}
 
     let [contactBudget ,setContactBudget] = useState("");
@@ -107,7 +108,7 @@ function AdminContactView(){
                                                 <th>첨부파일</th>
                                                 <td><a style={{color:"blue"}} onClick={()=>{
                                                     console.log(orgFileName);
-                                                    let url = "/api/fileDownload?fileName=" + saveFileName + "&orgFileName=" + orgFileName;
+                                                    let url = apiUrl + "/fileDownload?fileName=" + saveFileName + "&orgFileName=" + orgFileName;
                                                     axios.get(url, { responseType: 'blob' }).then((response) => {
                                                         const contentDisposition = response.headers['content-disposition'];
                                                         if (contentDisposition) {

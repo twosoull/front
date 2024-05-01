@@ -6,6 +6,7 @@ import { Paging, callApiGetContentList } from '../../utils/pagingUtil.js';
 import {Navbar,Container,Nav,Button,Row,Col} from 'react-bootstrap';
 import ContactList from './adminContactList.js';
 import AdminContactView from './adminContactView.js';
+import apiUrl from '../../../apiUrl.js';
 function AdminContact() {
 
 
@@ -19,7 +20,7 @@ function AdminContact() {
     let [size,setSize] = useState(0);
     let [pageCount,setPageCount] = useState(10);
     let [pageGroup,setPageGroup] = useState(0);
-    let [url,setUrl] = useState("/api/admin/contact/list");
+    let [url,setUrl] = useState(apiUrl + "/admin/contact/list");
 
     const pagingProps = {
         navigate,

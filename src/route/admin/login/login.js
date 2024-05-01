@@ -1,6 +1,7 @@
 import { useState,KeyboardEvent} from "react";
 import AdminHead from "../inc/adminHead";
 import axios from "axios";
+import apiUrl from "../../../apiUrl";
 
 function Login(){
 
@@ -17,7 +18,7 @@ function Login(){
         console.log(" 확인 : " + JSON.stringify(user,null,2));
         console.log('API 호출');
         
-        axios.post("/api/admin/login", user
+        axios.post(apiUrl + "/admin/login", user
         ).then(result => {
             console.log(result.data);
             if(result.data.status == "OK"){

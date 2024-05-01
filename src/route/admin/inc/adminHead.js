@@ -13,7 +13,7 @@ function AdminHead(){
 
 
             <link href="/resources/vendors/animate.css/animate.min.css" rel="stylesheet" />
-
+            <script src="/resources/js/jquery-3.4.1.min.js"></script>
             <script src="/resources/vendors/jquery/dist/jquery.min.js"></script>
             <script src="/resources/vendors/fastclick/lib/fastclick.js"></script>
             <script src="/resources/vendors/nprogress/nprogress.js"></script>

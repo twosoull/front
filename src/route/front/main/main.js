@@ -2,12 +2,13 @@ import axios from "axios";
 import isEmpty from "../../utils/util";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import apiUrl from "../../../apiUrl";
 
 function Main(){
 
     let [workList, setWorkList] = useState([]);
     useEffect(() => {
-        axios.get("/api/main").then((result) => {
+        axios.get(apiUrl + "/main").then((result) => {
             if (isEmpty(result.data.code)) {
                 setWorkList(result.data.data);
             } 

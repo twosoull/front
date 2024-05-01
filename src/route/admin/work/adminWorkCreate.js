@@ -14,6 +14,7 @@ import axios from 'axios';
 import Thumnail from "./thumnail/thumnail";
 import { useLocation, useParams } from "react-router-dom";
 import isEmpty from "../../utils/util";
+import apiUrl from "../../../apiUrl";
 function AdminWorkCreate(props){
 	//work 데이터
 	const [workForm,setWorkForm] = useState({id:0, workTitle:'', useYn:'Y'});
@@ -47,7 +48,7 @@ function AdminWorkCreate(props){
     let workId = findParams.id;
 	useEffect(() => {
 		if(!isEmpty(workId)){
-			let url = "/api/admin/work/findId";
+			let url = apiUrl + "/admin/work/findId";
 			let params = { workId : workId}
 		
 			//let [contactBudget ,setContactBudget] = useState("");

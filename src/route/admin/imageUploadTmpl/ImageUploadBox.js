@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import './imageUpload.css'; // 위의 CSS 코드를 styles.css 파일로 이동
 import axios from 'axios';
 import isEmpty from '../../utils/util';
+import apiUrl from '../../../apiUrl';
 const ImageUploadBox = (props) => {
   const [highlighted, setHighlighted] = useState(false);
 
@@ -106,7 +107,7 @@ const ImageUploadBox = (props) => {
 
     console.log('파일이 저장될 API 호출');
     
-    axios.post("http://localhost:3000/fileUpload", formData)
+    axios.post(apiUrl + "/fileUpload", formData)
     .then(result => {
       props.saveFileState.setSaveFileForms([...props.saveFileState.saveFileForms,{ id:result.data.data, ord:props.videoForm.ord, tmplType:props.videoForm.videoType, picOrd:props.picOrd}]);
       

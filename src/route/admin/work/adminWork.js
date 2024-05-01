@@ -7,6 +7,7 @@ import { Paging, callApiGetContentList } from '../../utils/pagingUtil.js';
 import {Navbar,Container,Nav,Button,Row,Col} from 'react-bootstrap';
 import AdminWorkView from "./adminWorkView.js";
 import AdminWorkCreate from "./adminWorkCreate.js";
+import apiUrl from "../../../apiUrl.js";
 function AdminWork(){
 
     let navigate = useNavigate();
@@ -19,7 +20,7 @@ function AdminWork(){
     let [size,setSize] = useState(0);
     let [pageCount,setPageCount] = useState(10);
     let [pageGroup,setPageGroup] = useState(0);
-    let [url,setUrl] = useState("/api/admin/work/list");   
+    let [url,setUrl] = useState(apiUrl + "/admin/work/list");   
     const pagingProps = {
         navigate,
         resultList, setResultList,
@@ -41,8 +42,8 @@ function AdminWork(){
     useEffect(() => {
         callApiGetContentList(pagingProps,0);
     }, [])
-    let updateApiUri="http://localhost:3000/api/admin/work/update";
-    let createApiUri="http://localhost:3000/api/admin/work/save";
+    let updateApiUri=apiUrl +"/admin/work/update";
+    let createApiUri=apiUrl +"/admin/work/save";
     
     return (
         <div className="right_col" role="main" style={{ minHeight: "476.25px" }}>

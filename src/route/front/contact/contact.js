@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import apiUrl from "../../../apiUrl";
 
 function Contact(){
 
@@ -207,7 +208,7 @@ function Contact(){
                                         formData.append('contactForm', blob);
 
                                         // API 호출
-                                        axios.post("/api/contact/save", formData, {
+                                        axios.post(apiUrl + "/contact/save", formData, {
                                             headers: {
                                                 'Content-Type': 'multipart/form-data'
                                             }

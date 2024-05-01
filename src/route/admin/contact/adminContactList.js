@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Paging, callApiGetContentList } from '../../utils/pagingUtil.js';
 import {Navbar,Container,Nav,Button,Row,Col} from 'react-bootstrap';
 import axios from 'axios';
+import apiUrl from '../../../apiUrl.js';
 function AdminContactList(props){
     return(
             <div className="col-md-12 col-sm-12  ">
@@ -49,8 +50,8 @@ function ResultList(props) {
 
                 if(window.confirm("정말 삭제 하시겠습니까?")){
                     let params = { contactId : props.contact.contact_no}
-                    let url = "/api/admin/contact/delete";
-                    axios.get("/api/admin/contact/delete",{params}).then((result) => {
+                    let url = apiUrl + "/admin/contact/delete";
+                    axios.get(apiUrl + "/admin/contact/delete",{params}).then((result) => {
                         console.log(result.data.status);
                         if(result.data.status == "OK"){
                             alert("삭제 되었습니다.")
